@@ -25,6 +25,7 @@ class UpdateSTLView(generics.UpdateAPIView):
     queryset = STL.objects.all()
     serializer_class = STLSerializer
     lookup_field = "id"
+    
     def get_object(self):
         stl = get_object_or_404(STL, id=self.kwargs["id"])
         if stl.fkUser != self.request.user:
