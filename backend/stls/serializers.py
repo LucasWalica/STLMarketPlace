@@ -31,3 +31,16 @@ class STLSerializer(serializers.ModelSerializer):
 class STLOnAlbumSerializer(serializers.ModelSerializer):
     model = STLOnAlbum
     fields = ["fkAlbum", "fkSTL"]
+
+    def validate(self, data):
+        user = self.context['request'].user
+        stl = data['fkSTL']
+        album = data['fkAlbum']
+
+        if stl.fkUser != user:
+            raise serializers.ValidationError("You do not own the STL.")
+        
+        if album.fkUser != user:
+            raise serializers.ValidationError("You do not own the album.")
+
+        return data

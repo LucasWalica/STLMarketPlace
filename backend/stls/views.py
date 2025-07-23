@@ -34,14 +34,12 @@ class UpdateSTLView(generics.UpdateAPIView):
     
 class STLViewList(generics.ListAPIView):
     parser_classes = [JSONParser]
-    permission_classes = [IsAuthenticated]
     queryset = STL.objects.all()
     serializer_class = STLSerializer
     pagination_class = PaginationSTLViewList
 
 class STLViewListByUser(generics.ListAPIView):
     parser_classes = [JSONParser]
-    permission_classes = [IsAuthenticated]
     queryset = STL.objects.all()
     serializer_class = STLSerializer
     pagination_class = PaginationSTLViewList
@@ -99,6 +97,8 @@ class CreateSTLOnAlbumView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = STLOnAlbum.objects.all()
     serializer_class = STLOnAlbumSerializer
+
+    
 
 class DeleteSTLonAlbumView(generics.DestroyAPIView):
     parser_classes = [JSONParser]

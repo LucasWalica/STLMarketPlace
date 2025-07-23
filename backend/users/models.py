@@ -1,6 +1,12 @@
 from django.db import models
 
-# Create your models here.
+
+
+
+#maybe add a maker profile
+
+
+# need to be implemented
 class PasswordReset(models.Model):
     email = models.EmailField()
     token = models.CharField(max_length=100)

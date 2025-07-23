@@ -56,7 +56,6 @@ class AlbumListOwnerView(generics.ListAPIView):
 
 class AlbumListByUser(generics.ListAPIView):
     parser_classes = [JSONParser]
-    permission_classes = [IsAuthenticated]
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     pagination_class = PaginationAlbumViewList
@@ -67,7 +66,6 @@ class AlbumListByUser(generics.ListAPIView):
     
 class AlbumList(generics.ListAPIView):
     parser_classes = [JSONParser]
-    permission_classes = [IsAuthenticated]
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     pagination_class = PaginationAlbumViewList
