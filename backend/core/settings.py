@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'album',
     'download',
     'notification',
@@ -48,7 +49,28 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'allauth',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+SITE_ID = 1 
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'dj_rest_auth.registration.serializers.RegisterSerializer',
+}
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # ← esto obliga a verificar el email
+ACCOUNT_AUTHENTICATION_METHOD = 'email'   # ← si quieres autenticar con email
+ACCOUNT_EMAIL_REQUIRED = True             # ← obligatorio el campo email
+ACCOUNT_USERNAME_REQUIRED = True # testear
 
 
 CORS_ALLOW_ALL_ORIGINS = True
