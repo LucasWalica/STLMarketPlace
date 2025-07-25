@@ -5,3 +5,24 @@
 
 
 
+body{
+    background-color: #5f464f;
+}
+
+.button1 {
+  @apply border-2 border-custom-dark-pink rounded-md pl-4 pr-4 p-2 
+         bg-custom-mint text-custom-dark-pink font-audiowide cursor-pointer
+         hover:bg-custom-shamrock-green hover:border-custom-mint
+         transition duration-150;
+}
+.button2{
+     @apply border-2 border-custom-dark-pink rounded-md pl-4 pr-4 p-2 
+         bg-custom-rosy text-custom-dark-pink font-audiowide cursor-pointer
+         hover:bg-custom-pink hover:border-custom-sage
+         transition duration-150;
+}
+
+.input1 {
+    @apply rounded-md bg-custom-dark-pink text-center 
+    pl-4 pr-4 p-2 text-custom-mint m-2;
+}

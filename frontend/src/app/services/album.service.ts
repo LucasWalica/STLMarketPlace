@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Album, AlbumWithId } from '../models/album.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,12 +11,12 @@ export class AlbumService {
 
   constructor(private http:HttpClient) { }
 
-  createAlbum(albumData:any):Observable<any>{
+  createAlbum(albumData:Album):Observable<any>{
     const data = JSON.stringify({albumData});
     return this.http.post<any>(`${this.apiUrl}create/`, data);
   }
 
-  updateAlbum(albumData:any ,albumID:number):Observable<any>{
+  updateAlbum(albumData:Album ,albumID:number):Observable<any>{
     const data = JSON.stringify({albumData});
     return this.http.put<any>(`${this.apiUrl}update/${albumID}/`, albumData);
   }
@@ -24,15 +25,15 @@ export class AlbumService {
     return this.http.delete<any>(`${this.apiUrl}delete/${albumID}/`);
   }
 
-  albumList():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}list/`);  
+  albumList():Observable<AlbumWithId>{
+    return this.http.get<AlbumWithId>(`${this.apiUrl}list/`);  
   }
 
-  albumListByUser(userID:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}list/${userID}/`);
+  albumListByUser(userID:number):Observable<AlbumWithId>{
+    return this.http.get<AlbumWithId>(`${this.apiUrl}list/${userID}/`);
   }
 
-  albumListByOwner():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}list/owner/`)
+  albumListByOwner():Observable<AlbumWithId>{
+    return this.http.get<AlbumWithId>(`${this.apiUrl}list/owner/`)
   }
 }

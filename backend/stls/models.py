@@ -20,6 +20,11 @@ class STL(models.Model):
     
     def __str__(self):
         return f"{self.pk} {self.name} {self.fkUser.username}"
+    
+
+class STLNormalImage(models.Model):
+    fkSTl = models.ForeignKey(STL, on_delete=models.CASCADE)
+    imageUrl = models.URLField(blank=False, null=False)
 
 #many to many relation
 class STLOnAlbum(models.Model):
@@ -28,3 +33,5 @@ class STLOnAlbum(models.Model):
 
     def __str__(self):
         return f"Album:{self.fkAlbum.name} STL:{self.fkSTL.name}"
+    
+

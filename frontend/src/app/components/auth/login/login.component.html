@@ -1,1 +1,27 @@
-<p>login works!</p>
+<div class="flex justify-center items-center ">
+    <div class="w-2/3 md:w-1/2 mt-10 bg-custom-sage border-2 border-custom-rosy rounded-md p-2 m-4">
+    <form [formGroup]="loginForm" (ngSubmit)="sendFormData($event)">
+        <h1 class="text-center font-audiowide text-xl">
+            Login to STL Marketplace            
+        </h1>
+        <div class="flex flex-col justify-center">
+            <div class="flex justify-center">
+                <input class="input1"
+                formControlName="username" placeholder="Username" type="text">
+            </div>
+            <div class="flex justify-center">
+                <input class="input1" 
+                formControlName="password" placeholder="Password" type="password"> 
+            </div>
+        </div>
+        <div class="flex flex-row justify-center gap-4">
+            <button class="button1" type="submit">
+                Submit
+            </button>
+            <button class="button1" (click)="goToRegister()">
+                Go to Register
+            </button>
+        </div>
+    </form>
+    </div>
+</div>

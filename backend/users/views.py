@@ -39,13 +39,12 @@ class LoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        email = request.data.get("email")
+        username = request.data.get("username")
         password = request.data.get("password")
         # Importante: authenticate espera username, por eso ponemos email en username
-        user = authenticate(username=email, password=password)
+        user = authenticate(username=username, password=password)
 
         if user is not None:
-            print("user", user)
             token, created = Token.objects.get_or_create(user=user)
             return Response({
                 "token": token.key,

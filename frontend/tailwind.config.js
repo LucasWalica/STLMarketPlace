@@ -11,6 +11,7 @@ module.exports = {
         "custom-sage":"#B6B88C",
         "custom-rosy": "#D39C9B",
         "custom-pink":"#DBB0BF",
+        "custom-dark-pink": "#5f464f"
       },
       fontFamily: {
         orbitron: ['"Orbitron"', 'sans-serif'],

@@ -1,23 +1,35 @@
 from rest_framework import serializers
-from .models import STL, STLOnAlbum
+from .models import STL, STLOnAlbum, STLNormalImage
+
+
+
+class ImageSerialzer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = STLNormalImage
+        fields = ["imageUrl"]
+
 
 class STLSerializer(serializers.ModelSerializer):
 
-
     likes = serializers.IntegerField(read_only=True)
     downloads = serializers.IntegerField(read_only=True)
-    
+    images = serializers.ListField(
+        child = serializers.URLField(),
+        write_only = True,
+        required = False
+    )
+
     class Meta:
         model = STL
         fields = [
             "name", "description", 
-            "stlUrl", "albumFk", 
-            "category1", "category2", "price",
-            "likes", "downloads"
+            "stlUrl", "category1", 
+            "category2", "price",
+            "likes", "downloads", "images"
         ]
 
     extra_kwargs = {
-            "albumFk": {"required": False, "allow_null": True},
             "category1": {"required": False, "allow_null": True},
             "category2": {"required": False, "allow_null": True},
             "price": {"required": False, "allow_null": True},
@@ -25,7 +37,14 @@ class STLSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        return STL.objects.create(fkUser=user, **validated_data)
+        image_urls = validated_data.pop("images", [])
+
+        stl_instance = STL.objects.create(fkUser=user, **validated_data)
+        
+        for url in image_urls:
+            STLNormalImage.objects.create(fkSTL=stl_instance, imageUrl=url)
+        
+        return stl_instance
 
 
 class STLOnAlbumSerializer(serializers.ModelSerializer):
