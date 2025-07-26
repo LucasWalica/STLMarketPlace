@@ -3,18 +3,22 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { SocialAuthService,GoogleLoginProvider,SocialUser} from '@abacritt/angularx-social-login';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, GoogleSigninButtonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit{
 
 
-  constructor(private router:Router, private auth:AuthService){
-
-  }
+  constructor(
+    private router:Router, 
+    private auth:AuthService,
+    private socialAuth:SocialAuthService
+  ){ }
 
   ngOnInit(): void {
     if(this.auth.isAuthenticated()){
@@ -23,10 +27,10 @@ export class RegisterComponent implements OnInit{
   }
 
   registerForm = new FormGroup({
-    email: new FormControl("", Validators.required),
-    username: new FormControl("", Validators.required),
-    password1: new FormControl("", Validators.required),
-    password2: new FormControl("", Validators.required)
+    email: new FormControl("", [Validators.required, Validators.email]),
+    username: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(25)]),
+    password1: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+    password2: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(20)])
   }, {
     validators: passwordConfirmationValidator("password1", "password2")
   });
@@ -52,6 +56,16 @@ export class RegisterComponent implements OnInit{
 
   }
 
+  googleAuth(){
+    this.socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID).then((user:SocialUser)=>{
+      console.log("user");
+      console.log("ID token de google",user.idToken)
+       console.log('Google user:', user);
+      this.auth.handleGoogleLogin(user);
+    }).catch(err => {
+      console.log("erro al iniciar sesion: ", err);
+    })
+  }
 
   goToLogin(){
     this.router.navigate(["login"])

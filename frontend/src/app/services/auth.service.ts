@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { SocialUser } from '@abacritt/angularx-social-login';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class AuthService {
   private apiUrl = "http://localhost:8000/auth/"
 
   login(username:string, password:string): Observable<any>{
-    let data = JSON.stringify({username, password})
+    const data = { username, password };
     return this.http.post<any>(`${this.apiUrl}login/`, data).pipe(
       tap(response => {
         localStorage.setItem("stlMarketToken", response.token);
@@ -22,8 +23,24 @@ export class AuthService {
   }
 
   register(username:string, email:string, password:string){
-    let data = JSON.stringify({username, email, password})
+    const data = { username, email, password };
     return this.http.post<any>(`${this.apiUrl}register/`, data);
+  }
+
+
+  handleGoogleLogin(user:SocialUser){
+    const idToken = user.idToken;
+    this.http.post<{token:string}>(`${this.apiUrl}google-login/`, {
+      token:idToken,
+    }).subscribe({
+      next: (response) => {
+        console.log("Login exitoso",response.token);
+        localStorage.setItem("stlMarketToken", response.token);
+      },
+      error: (err) => {
+        console.error("Error: ", err);
+      }
+    })
   }
 
   logout(): void {

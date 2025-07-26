@@ -26,3 +26,9 @@ body{
     @apply rounded-md bg-custom-dark-pink text-center 
     pl-4 pr-4 p-2 text-custom-mint m-2;
 }
+
+.inputAlert {
+    @apply bg-custom-rosy text-custom-dark-pink 
+    pl-4 pr-4 p-2 
+    rounded-md text-center
+}

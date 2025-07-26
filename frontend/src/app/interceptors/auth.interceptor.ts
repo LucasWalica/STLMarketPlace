@@ -1,19 +1,14 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem("stlMarketToken");
-
-  let headers: { [header: string]: string } = {
-    'Content-Type': 'application/json'
-  };
+  const token = localStorage.getItem('stlMarketToken');
+  let headers = req.headers;
 
   if (token) {
-    headers['Authorization'] = `Token ${token}`;
+    headers = headers.set('Authorization', `Token ${token}`);
   }
 
-  const authReq = req.clone({
-    setHeaders: headers
-  });
+  const authReq = req.clone({ headers });
 
   return next(authReq);
 };

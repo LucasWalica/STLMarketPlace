@@ -4,23 +4,54 @@
         <h1 class="text-center font-audiowide text-xl">
             Login to STL Marketplace            
         </h1>
-        <div class="flex flex-col justify-center">
-            <div class="flex justify-center">
+        <div class="grid justify-center">
+            <div class="grid justify-center">
                 <input class="input1"
                 formControlName="username" placeholder="Username" type="text">
             </div>
-            <div class="flex justify-center">
+            <div>
+                @if (!this.loginForm.valid && this.loginForm.get("username")?.touched) {
+                    @if (this.loginForm.get("username")?.errors?.["required"]) {
+                        <h2 class="inputAlert">Username is required</h2>
+                    }@else if (this.loginForm.get("username")?.errors?.["minlength"]) {
+                        <h2 class="inputAlert">Username need to have at least 6 characters</h2>
+                    }@else if (this.loginForm.get("username")?.errors?.["maxlength"]) {
+                         <h2 class="inputAlert">Username characters limit is 25</h2>
+                    }
+                }
+            </div>
+            <div class="grid justify-center">
                 <input class="input1" 
                 formControlName="password" placeholder="Password" type="password"> 
+                <div>
+                @if (!this.loginForm.valid && this.loginForm.get("password")?.touched) {
+                    @if (this.loginForm.get("password")?.errors?.["required"]) {
+                        <h2 class="inputAlert">Password is required</h2>
+                    }@else if (this.loginForm.get("password")?.errors?.["minlength"]) {
+                        <h2 class="inputAlert">Password need to ahve at least 6 characters</h2>
+                    }@else if (this.loginForm.get("password")?.errors?.["maxlength"]) {
+                        <h2 class="inputAlert">Password cannot exceed 20 characters</h2>
+                    }
+                }
+                </div>
             </div>
         </div>
-        <div class="flex flex-row justify-center gap-4">
+        <div class="flex flex-row justify-center gap-4 p-2 m-2">
             <button class="button1" type="submit">
                 Submit
             </button>
             <button class="button1" (click)="goToRegister()">
                 Go to Register
             </button>
+        </div>
+        <div class="flex justify-center p-4 m-2">
+            <asl-google-signin-button 
+            (signIn)="googleAuth()" 
+            type="standard"
+            theme="outline"
+            shape="rectangular"
+            size="large">
+            </asl-google-signin-button>
         </div>
     </form>
     </div>
