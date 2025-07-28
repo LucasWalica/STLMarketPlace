@@ -1,7 +1,7 @@
 <div class="flex justify-center items-center ">
-    <div class="w-2/3 md:w-1/2 mt-10 bg-custom-sage border-2 border-custom-rosy rounded-md p-2 m-4">
+    <div class="w-2/3 md:w-1/2 mt-10 bg-custom-blue-night border-2 border-custom-blue-night rounded-md p-2 m-4">
     <form [formGroup]="registerForm" (ngSubmit)="sendRegisterData($event)">
-        <h1 class="text-center font-audiowide text-xl">
+        <h1 class="text-center font-audiowide text-xl text-custom-bright-lilac">
             Register to STL Marketplace            
         </h1>
         <div class="flex flex-col justify-center">
@@ -26,7 +26,7 @@
                         @if (this.registerForm.get("username")?.errors?.["required"]) {
                             <h2 class="inputAlert">Username is required</h2>
                         }@else if (this.registerForm.get("username")?.errors?.["minlength"]) {
-                             <h2 class="inputAlert">Username need to have at least 6 characters</h2>
+                             <h2 class="inputAlert">Username need to have at least 5 characters</h2>
                         }@else if (this.registerForm.get("username")?.errors?.["maxlength"]) {
                              <h2 class="inputAlert">Username characters limit is 25</h2>
                         }

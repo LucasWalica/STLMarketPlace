@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import Maker
 from django.core.exceptions import ValidationError
 
 
@@ -30,3 +31,12 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data['email']
         )
         return user
+    
+
+class MakerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Maker
+        fields = [
+            "display_name", "bio", "avatar", 
+            "instagram", "twitter", "tiktok"
+        ]

@@ -51,5 +51,15 @@ export class StlService {
     return this.http.delete<any>(`${this.apiUrl}stlAlbumEntry/delete/${stlAlbumEntryID}/`);
   }
 
+  // test
+  uploadFileToCloudinary(file:File){
+    const url = "https://api.cloudinary.com/v1_1/STLMarketPlace/upload";
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'STLmarketPlace');
+
+    return this.http.post(url, formData);
+  }
+
 
 }

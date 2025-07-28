@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'dj_rest_auth',
     'allauth',
+    'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1 
@@ -65,10 +67,9 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'dj_rest_auth.registration.serializers.RegisterSerializer',
 }
 
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # ← esto obliga a verificar el email
-ACCOUNT_AUTHENTICATION_METHOD = 'email'   # ← si quieres autenticar con email
-ACCOUNT_EMAIL_REQUIRED = True             # ← obligatorio el campo email
-ACCOUNT_USERNAME_REQUIRED = True # testear
 
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -82,6 +83,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

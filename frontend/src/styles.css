@@ -6,29 +6,31 @@
 
 
 body{
-    background-color: #5f464f;
+    @apply bg-custom-tulip
 }
 
 .button1 {
   @apply border-2 border-custom-dark-pink rounded-md pl-4 pr-4 p-2 
-         bg-custom-mint text-custom-dark-pink font-audiowide cursor-pointer
-         hover:bg-custom-shamrock-green hover:border-custom-mint
+         bg-custom-bright-lilac text-custom-dark-pink font-audiowide cursor-pointer
+         hover:bg-custom-turquoise hover:border-custom-blue-night
          transition duration-150;
 }
 .button2{
      @apply border-2 border-custom-dark-pink rounded-md pl-4 pr-4 p-2 
-         bg-custom-rosy text-custom-dark-pink font-audiowide cursor-pointer
-         hover:bg-custom-pink hover:border-custom-sage
+         bg-custom-rosy text-custom-bright-lilac font-audiowide cursor-pointer
+         hover:bg-custom-pink 
          transition duration-150;
 }
 
 .input1 {
-    @apply rounded-md bg-custom-dark-pink text-center 
-    pl-4 pr-4 p-2 text-custom-mint m-2;
+    @apply rounded-md bg-custom-violet text-center 
+    pl-4 pr-4 p-2 text-custom-bright-lilac m-2;
 }
 
 .inputAlert {
-    @apply bg-custom-rosy text-custom-dark-pink 
+    @apply bg-custom-bright-lilac text-custom-dark-pink 
     pl-4 pr-4 p-2 
     rounded-md text-center
 }
+/*clodinaty api key*/
+/*q7tbpLfALMHxINr2RbH9I0_CCGk*/

@@ -6,8 +6,13 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
-from .serializers import UserSerializer
+from .serializers import UserSerializer, MakerSerializer
+from .models import Maker
+from rest_framework.parsers import JSONParser
+from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import PermissionDenied
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 from google.oauth2 import id_token
 from google.auth.transport import requests
 # Create your views here.
@@ -87,3 +92,31 @@ class GoogleLoginView(APIView):
 
         except ValueError as e:
             return Response({'error': 'Token inválido', 'details': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MakerCreateView(generics.CreateAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    queryset = Maker.objects.all()
+    serializer_class = MakerSerializer
+
+
+class MakerUpdateView(generics.UpdateAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    queryset = Maker.objects.all()
+    serializer_class = MakerSerializer
+    lookup_field = "id"
+
+    def get_object(self):
+        maker = get_object_or_404(Maker, id=self.kwargs["id"])
+        if maker.fkUser != self.request.user:
+            raise PermissionDenied("you cannot update this object")
+        return maker
+    
+class MakerDetailView(generics.RetrieveAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    queryset = Maker.objects.all()
+    serializer_class = MakerSerializer
+    lookup_field = "id"

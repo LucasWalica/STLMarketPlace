@@ -1,4 +1,4 @@
-<div class="flex flex-row justify-end m-2 p-2 bg-custom-sage rounded-md shadow-md shadow-custom-sage">
+<div class="flex flex-row justify-end m-2 p-2 gap-2 bg-custom-blue-night rounded-md shadow-md shadow-custom-sage">
     
 
 
@@ -7,6 +7,9 @@
             Login
         </button>
     } @else {
+        <button (click)="goToProfile()" class="button1">
+            Profile
+        </button>
         <button (click)="logout()" class="button2">
             Logout
         </button>
