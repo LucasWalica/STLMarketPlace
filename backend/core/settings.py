@@ -34,12 +34,11 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = []
 
-cloudinary.config(
-    cloud_name= env("CLOUD_NAME"),
-    api_key=env("API_KEY"),
-    api_secret=env("API_SECRET"),
-    secure=True
-)
+CLOUDINARY = {
+    "cloud_name": env("CLOUD_NAME"),
+    "api_key": env("API_KEY"),
+    "api_secret": env("API_SECRET"),
+}
 
 # Application definition
 

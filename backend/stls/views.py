@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from .pagination import PaginationSTLViewList
 from download.models import DownloadsByUser
 from rest_framework.parsers import MultiPartParser, FormParser
-import cloudinary
+from core import cloudinary
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
