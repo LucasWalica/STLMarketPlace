@@ -1,7 +1,8 @@
 from django.urls import path, include
 from .views import (
     UserCreateView, LoginView, GoogleLoginView,
-    MakerCreateView, MakerUpdateView, MakerDetailView
+    MakerCreateView, MakerUpdateView, MakerDetailView,
+    OwnMakerProfile
     )
 
 urlpatterns = [
@@ -10,5 +11,7 @@ urlpatterns = [
     path("google-login/", GoogleLoginView.as_view()),
     path("maker/create/", MakerCreateView.as_view()),
     path("maker/update/<int:id>/", MakerUpdateView.as_view()),
-    path("maker/<int:id>/", MakerDetailView.as_view())
+    path("maker/<int:id>/", MakerDetailView.as_view()),
+    path("maker/own/", OwnMakerProfile.as_view()),
+
 ]

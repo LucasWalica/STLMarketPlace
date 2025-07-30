@@ -21,6 +21,11 @@ body{
          hover:bg-custom-pink 
          transition duration-150;
 }
+.button3 {
+    @apply bg-custom-shamrock-green hover:bg-custom-rosy 
+    text-white font-audiowide py-3 px-6 rounded-lg shadow-md 
+    transition
+}
 
 .input1 {
     @apply rounded-md bg-custom-violet text-center 

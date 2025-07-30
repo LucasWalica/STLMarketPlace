@@ -37,6 +37,6 @@ class MakerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Maker
         fields = [
-            "display_name", "bio", "avatar", 
+            "id","display_name", "bio", "avatar", 
             "instagram", "twitter", "tiktok"
         ]

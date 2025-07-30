@@ -15,6 +15,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from rest_framework.exceptions import NotFound
 # Create your views here.
 
 class UserCreateView(generics.CreateAPIView):
@@ -100,6 +101,9 @@ class MakerCreateView(generics.CreateAPIView):
     queryset = Maker.objects.all()
     serializer_class = MakerSerializer
 
+    def perform_create(self, serializer):
+        print(self.request.user)
+        serializer.save(fkUser=self.request.user)
 
 class MakerUpdateView(generics.UpdateAPIView):
     parser_classes = [JSONParser]
@@ -120,3 +124,15 @@ class MakerDetailView(generics.RetrieveAPIView):
     queryset = Maker.objects.all()
     serializer_class = MakerSerializer
     lookup_field = "id"
+
+class OwnMakerProfile(generics.RetrieveAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    queryset = Maker.objects.all()
+    serializer_class = MakerSerializer
+
+    def get_object(self):
+        try:
+            return Maker.objects.get(fkUser=self.request.user)
+        except Maker.DoesNotExist:
+            raise NotFound(detail="Maker profile doesn't exist")

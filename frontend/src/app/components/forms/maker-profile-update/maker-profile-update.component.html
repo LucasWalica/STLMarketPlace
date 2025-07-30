@@ -1,1 +1,81 @@
-<p>maker-profile-update works!</p>
+<app-navbar></app-navbar>
+
+<div class="max-w-xl mx-auto p-4">
+  <form [formGroup]="updateMakerProfileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Display Name -->
+    <div>
+      <label class="block font-semibold mb-1">Name:</label>
+      <input
+        type="text"
+        formControlName="display_name"
+        placeholder="{{this.currentMakerProfile.display_name}}"
+        class="w-full border rounded p-2"
+      />
+    </div>
+
+    <!-- Bio -->
+    <div>
+      <label class="block font-semibold mb-1">Presentation:</label>
+      <textarea
+        formControlName="bio"
+        placeholder="{{this.currentMakerProfile.bio}}"
+        rows="4"
+        class="w-full border rounded p-2"
+      ></textarea>
+    </div>
+
+    <!-- Avatar Custom Select -->
+    <div>
+      <label class="block font-semibold mb-2">Select an Avatar:</label>
+      <div class="grid grid-cols-6 gap-3">
+        <div
+            *ngFor="let icon of Icons"
+            (click)="updateMakerProfileForm.get('avatar')?.setValue(icon); selectIcon(icon)"
+            [ngClass]="{
+            'ring-4 ring-custom-turquoise shadow-lg scale-105': updateMakerProfileForm.get('avatar')?.value === icon,
+            'ring-4 ring-custom-turquoise shadow-lg ': this.currentMakerProfile.avatar === icon,
+            'cursor-pointer transition-transform duration-200 ease-in-out hover:opacity-80 hover:scale-105': true,
+            'rounded overflow-hidden': true
+            }"
+            style="will-change: transform;"
+        >
+            <img [src]="icon" alt="avatar" class="w-full h-auto" />
+        </div>
+        </div>
+      <input type="hidden" formControlName="avatar" />
+    </div>
+
+    <!-- Social Links -->
+    <div class="text-center text-xl font-orbitron">This links are not necesary</div>
+    <div class="grid grid-cols-1 gap-3">
+      <input
+        type="text"
+        formControlName="instagram"
+        placeholder="Instagram link"
+        class="w-full border rounded p-2"
+      />
+      <input
+        type="text"
+        formControlName="twitter"
+        placeholder="Twitter link"
+        class="w-full border rounded p-2"
+      />
+      <input
+        type="text"
+        formControlName="tiktok"
+        placeholder="TikTok link"
+        class="w-full border rounded p-2"
+      />
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-center">
+      <button
+        type="submit"
+        class="button1"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

@@ -2,15 +2,16 @@ import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import { environment } from './enviroment/enviroment';
 import { routes } from './app/app.routes';
+import { authInterceptor } from './app/interceptors/auth.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom(SocialLoginModule),
     provideRouter(routes),
     {
@@ -24,6 +25,6 @@ bootstrapApplication(AppComponent, {
           },
         ],
       } as SocialAuthServiceConfig,
-    },
+    }
   ],
 });

@@ -1,1 +1,63 @@
 <app-navbar></app-navbar>
+<div>
+    <div class="grid justify-center font-orbitron">
+        @if (this.showCreateMakerProfile) {
+            <h2 class="text-xl m-2  text-custom-tulip bg-custom-blue-night p-2 rounded-md">
+                Start selling your designs!
+            </h2>
+            <button (click)="this.goToMakerCreate()" class="button1">
+                Create your maker profile
+            </button>
+        }@else {
+            <div class="flex flex-col md:flex-row justify-evenly items-center gap-8 p-6 bg-custom-bright-lilac rounded-lg shadow-md max-w-5xl mx-auto font-orbitron text-custom-blue-night">
+            <!-- Avatar + Nombre -->
+            <div class="flex flex-col items-center space-y-3">
+                <img [src]="maker.avatar" alt="Avatar" class="h-32 w-32 rounded-full object-cover border-4 border-custom-shamrock-green shadow-lg" />
+                <h2 class="text-3xl font-audiowide text-custom-rosy text-center">{{ maker.display_name }}</h2>
+            </div>
+
+            <!-- Presentación -->
+            <div class="max-w-md">
+                <h3 class="text-xl font-pressstart mb-2 text-custom-tulip">Presentation</h3>
+                <p class="text-custom-dark-pink leading-relaxed font-tomorrow">{{ maker.bio }}</p>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="flex flex-col space-y-3">
+                <h3 *ngIf="maker.instagram || maker.tiktok || maker.twitter" class="text-xl font-pressstart mb-2 text-custom-violet">Follow me</h3>
+                <div class="flex space-x-4">
+                <a *ngIf="maker.instagram" href="{{ maker.instagram }}" target="_blank" class="flex items-center space-x-2 text-custom-rosy hover:text-custom-pink transition">
+                    <!-- Instagram SVG icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zM12 7.25a4.75 4.75 0 110 9.5 4.75 4.75 0 010-9.5zM17.5 7a1.25 1.25 0 11-2.5 0 1.25 1.25 0 012.5 0z"/>
+                    </svg>
+                    <span>Instagram</span>
+                </a>
+                <a *ngIf="maker.tiktok" href="{{ maker.tiktok }}" target="_blank" class="flex items-center space-x-2 text-custom-blue-night hover:text-custom-shamrock-green transition">
+                    <!-- TikTok SVG icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 2v12a4 4 0 11-4-4h3V2h2zM15 2v6a6 6 0 01-6 6H7v4h2a10 10 0 0010-10V2h-4z"/>
+                    </svg>
+                    <span>TikTok</span>
+                </a>
+                <a *ngIf="maker.twitter" href="{{ maker.twitter }}" target="_blank" class="flex items-center space-x-2 text-custom-tulip hover:text-custom-pink transition">
+                    <!-- Twitter SVG icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 19c7.333 0 11.333-6.1 11.333-11.388 0-.175 0-.349-.012-.522A8.13 8.13 0 0022 4.93a8.27 8.27 0 01-2.356.64 4.15 4.15 0 001.813-2.288 8.286 8.286 0 01-2.625 1.003 4.12 4.12 0 00-7.03 3.753A11.7 11.7 0 013 4.78a4.117 4.117 0 001.273 5.495 4.088 4.088 0 01-1.865-.514v.05a4.11 4.11 0 003.31 4.037 4.12 4.12 0 01-1.859.07 4.13 4.13 0 003.848 2.868A8.268 8.268 0 012 17.54 11.66 11.66 0 008 19z"/>
+                    </svg>
+                    <span>Twitter</span>
+                </a>
+                </div>
+            </div>
+
+            <!-- Botón actualizar -->
+            <div class="flex items-center">
+                <button (click)="goToMakerUpdate()" class="button3">
+                    Update profile
+                </button>
+            </div>
+            </div>
+        }
+    <!--Own stls and albums-->
+    </div>
+</div>
