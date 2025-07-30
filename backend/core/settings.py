@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os 
 from pathlib import Path
 import environ
+import cloudinary
+
+
+
 
 env = environ.Env(debug=(bool,True))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,6 +34,12 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = []
 
+cloudinary.config(
+    cloud_name= env("CLOUD_NAME"),
+    api_key=env("API_KEY"),
+    api_secret=env("API_SECRET"),
+    secure=True
+)
 
 # Application definition
 

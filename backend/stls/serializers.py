@@ -24,12 +24,12 @@ class STLSerializer(serializers.ModelSerializer):
         model = STL
         fields = [
             "name", "description", 
-            "stlUrl", "category1", 
+            "file_url", "category1", 
             "category2", "price",
             "likes", "downloads", "images"
         ]
 
-    extra_kwargs = {
+        extra_kwargs = {
             "category1": {"required": False, "allow_null": True},
             "category2": {"required": False, "allow_null": True},
             "price": {"required": False, "allow_null": True},
@@ -42,7 +42,7 @@ class STLSerializer(serializers.ModelSerializer):
         stl_instance = STL.objects.create(fkUser=user, **validated_data)
         
         for url in image_urls:
-            STLNormalImage.objects.create(fkSTL=stl_instance, imageUrl=url)
+            STLNormalImage.objects.create(fkSTL=stl_instance, file_url=url)
         
         return stl_instance
 

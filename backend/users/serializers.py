@@ -40,3 +40,4 @@ class MakerSerializer(serializers.ModelSerializer):
             "id","display_name", "bio", "avatar", 
             "instagram", "twitter", "tiktok"
         ]
+        read_only_fields = ["id"]

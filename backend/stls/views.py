@@ -8,15 +8,29 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from .pagination import PaginationSTLViewList
 from download.models import DownloadsByUser
+from rest_framework.parsers import MultiPartParser, FormParser
+import cloudinary
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
 class CreateSTLView(generics.CreateAPIView):
-    parser_classes = [JSONParser]
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [IsAuthenticated]
     queryset = STL.objects.all()
     serializer_class = STLSerializer
+
+    def perform_create(self, serializer):
+        stl_file = self.request.FILES.get('stl_file')
+        if stl_file:
+            upload_result = cloudinary.uploader.upload_large(stl_file, resource_type="auto")
+            serializer.save(
+                fkUser=self.request.user,
+                file_url=upload_result.get('secure_url'),
+                file_public_id=upload_result.get('public_id'),
+            )
+        else:
+            serializer.save(fkUser=self.request.user)
 
 
 class UpdateSTLView(generics.UpdateAPIView):
