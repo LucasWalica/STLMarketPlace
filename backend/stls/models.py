@@ -24,7 +24,7 @@ class STL(models.Model):
     
 
 class STLNormalImage(models.Model):
-    fkSTl = models.ForeignKey(STL, on_delete=models.CASCADE)
+    fkSTL = models.ForeignKey(STL, on_delete=models.CASCADE)
     file_url = models.URLField(blank=True, null=True)
     file_public_id = models.CharField(max_length=255, blank=True, null=True)
 

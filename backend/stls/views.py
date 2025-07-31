@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
 from .serializers import STLSerializer, STLOnAlbumSerializer
-from .models import STL, STLOnAlbum
+from .models import STL, STLOnAlbum, STLNormalImage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import JSONParser
 from django.core.exceptions import PermissionDenied
@@ -9,7 +9,6 @@ from django.contrib.auth.models import User
 from .pagination import PaginationSTLViewList
 from download.models import DownloadsByUser
 from rest_framework.parsers import MultiPartParser, FormParser
-from core import cloudinary
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
@@ -22,15 +21,26 @@ class CreateSTLView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         stl_file = self.request.FILES.get('stl_file')
+        images = self.request.FILES.getlist('images')  # ← ✅ recoger múltiples archivos
+
         if stl_file:
             upload_result = cloudinary.uploader.upload_large(stl_file, resource_type="auto")
-            serializer.save(
+            stl_instance = serializer.save(
                 fkUser=self.request.user,
                 file_url=upload_result.get('secure_url'),
                 file_public_id=upload_result.get('public_id'),
             )
         else:
-            serializer.save(fkUser=self.request.user)
+            stl_instance = serializer.save(fkUser=self.request.user)
+
+        # ✅ Subir imágenes si existen
+        for image in images:
+            img_result = cloudinary.uploader.upload(image, folder='stl_images')
+            STLNormalImage.objects.create(
+                fkSTL=stl_instance,
+                file_url=img_result.get('secure_url')
+            )
+
 
 
 class UpdateSTLView(generics.UpdateAPIView):

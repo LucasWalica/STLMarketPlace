@@ -14,11 +14,6 @@ class STLSerializer(serializers.ModelSerializer):
 
     likes = serializers.IntegerField(read_only=True)
     downloads = serializers.IntegerField(read_only=True)
-    images = serializers.ListField(
-        child = serializers.URLField(),
-        write_only = True,
-        required = False
-    )
 
     class Meta:
         model = STL
@@ -26,13 +21,14 @@ class STLSerializer(serializers.ModelSerializer):
             "name", "description", 
             "file_url", "category1", 
             "category2", "price",
-            "likes", "downloads", "images"
+            "likes", "downloads"
         ]
-
         extra_kwargs = {
             "category1": {"required": False, "allow_null": True},
             "category2": {"required": False, "allow_null": True},
             "price": {"required": False, "allow_null": True},
+            "downloads": {"required":False, "allow_null":True},
+            "likes":{"required":False, "allow_null":True}
         }
 
     def create(self, validated_data):
