@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { MakerService } from '../../services/maker.service';
 import { Maker } from '../../models/maker.models';
 import { CommonModule } from '@angular/common';
+import { StlService } from '../../services/stl.service';
+import { AlbumService } from '../../services/album.service';
+import { STL } from '../../models/STL.models';
 
 @Component({
   selector: 'app-profile',
@@ -17,14 +20,45 @@ export class ProfileComponent  implements OnInit{
 
   maker:Maker = {} as Maker; 
   showCreateMakerProfile: boolean = false;
+  ownerSTLs:STL[] = [] as STL[];
 
   constructor(
     private auth:AuthService, 
     private router:Router,
-    private makerService:MakerService
+    private makerService:MakerService,
+    private stlService:StlService,
+    private albumService:AlbumService
   ){ }
 
   ngOnInit(): void {
+    this.getMakerProfileData();
+  }
+
+
+
+  goToMakerCreate(){
+    this.router.navigate(["maker/create"])
+  }
+  goToMakerUpdate(){
+    this.router.navigate(["maker/update"])
+  }
+  goToPostSTL(){
+    this.router.navigate(["stl/create"])
+  }
+
+
+  getownSTLData(){
+    this.stlService.listSTLByOwner().subscribe({
+      next: (stl:any)=>{
+        this.ownerSTLs = stl;
+      },
+      error: (error)=>{
+        console.log("error")
+      }
+    })
+  }
+
+  getMakerProfileData(){
     this.makerService.ownMakerProfile().subscribe({
       next :(maker)=>{
         this.maker = maker;
@@ -38,12 +72,5 @@ export class ProfileComponent  implements OnInit{
       }
     }
     });
-  }
-
-  goToMakerCreate(){
-    this.router.navigate(["maker/create"])
-  }
-  goToMakerUpdate(){
-    this.router.navigate(["maker/update"])
   }
 }

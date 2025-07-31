@@ -1,1 +1,83 @@
-<p>stl-create works!</p>
+<app-navbar></app-navbar>
+
+<div class="max-w-xl mx-auto p-4">
+  <form [formGroup]="postSTLForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="space-y-6">
+    <!-- STL Name -->
+    <div>
+      <label class="block font-semibold mb-1">Model Name:</label>
+      <input
+        type="text"
+        formControlName="name"
+        placeholder="Enter STL model name"
+        class="w-full border rounded p-2"
+      />
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label class="block font-semibold mb-1">Description:</label>
+      <textarea
+        formControlName="description"
+        placeholder="Enter a detailed description"
+        rows="4"
+        class="w-full border rounded p-2"
+      ></textarea>
+    </div>
+
+   <!-- STL Zip Upload -->
+    <div>
+    <label class="block font-semibold mb-1">STL Zip File:</label>
+    <input
+        type="file"
+        (change)="onFileSelected($event)"
+        required
+        accept=".zip"
+        class="block w-full border rounded p-2"
+    />
+    </div>
+
+    <!-- Preview Images -->
+    <div>
+    <label class="block font-semibold mb-1">Preview Images (Max 4):</label>
+    <input
+        type="file"
+        multiple
+        accept="image/*"
+        (change)="onImagesSelected($event)"
+        class="block w-full border rounded p-2"
+    />
+    </div>
+
+
+    <!-- Optional Fields -->
+    <div class="grid grid-cols-1 gap-3">
+      <input
+        type="text"
+        formControlName="category1"
+        placeholder="Category 1 (optional)"
+        class="w-full border rounded p-2"
+      />
+      <input
+        type="text"
+        formControlName="category2"
+        placeholder="Category 2 (optional)"
+        class="w-full border rounded p-2"
+      />
+      <input
+        type="number"
+        formControlName="price"
+        placeholder="Price (min 2€)"
+        min="2"
+        step="0.01"
+        class="w-full border rounded p-2"
+      />
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-center">
+      <button type="submit" class="button1">
+        Upload STL
+      </button>
+    </div>
+  </form>
+</div>

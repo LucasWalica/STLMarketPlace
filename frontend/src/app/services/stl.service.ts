@@ -12,8 +12,8 @@ export class StlService {
   constructor(private http:HttpClient) { }
 
 
-  createSTL(stlData:STL):Observable<any>{
-    const data = JSON.stringify({stlData})
+  createSTL(stlData:FormData):Observable<any>{
+    const data = stlData
     return this.http.post<any>(`${this.apiUrl}stl/create/`, data);
   }
 
