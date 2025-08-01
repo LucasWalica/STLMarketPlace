@@ -3,21 +3,23 @@ import { FormControl, FormControlName, FormGroup, ReactiveFormsModule, Validator
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { environment } from '../../../../enviroment/enviroment';
+import { GoogleAuthProvider, signInWithPopup, Auth } from '@angular/fire/auth';
+import { Inject } from '@angular/core';
+
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, GoogleSigninButtonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   standalone: true,
 })
 export class LoginComponent implements OnInit {
 
+
+  private auth:Auth = Inject(Auth)
   constructor(
-    private auth:AuthService, 
-    private router:Router, 
-    private socialAuth:SocialAuthService
+    private authService:AuthService, 
+    private router:Router
   ){ }
 
   loginForm = new FormGroup({
@@ -26,14 +28,14 @@ export class LoginComponent implements OnInit {
   })
 
   ngOnInit(): void {
-    if(this.auth.isAuthenticated()){
+    if(this.authService.isAuthenticated()){
       this.router.navigate([""])
     }
   }
 
   sendFormData(event:Event){
     event.preventDefault()
-    this.auth.login(
+    this.authService.login(
       this.loginForm.get("username")?.value??"",
       this.loginForm.get("password")?.value??""
     ).subscribe({
@@ -47,17 +49,21 @@ export class LoginComponent implements OnInit {
     })
   }
 
-   googleAuth(){
-      this.socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID).then((user:SocialUser)=>{
-        console.log("user");
-        console.log("ID token de google",user.idToken)
-         console.log('Google user:', user);
-        this.auth.handleGoogleLogin(user);
-      }).catch(err => {
-        console.log("erro al iniciar sesion: ", err);
+   loginWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(this.auth, provider)
+      .then((result) => {
+        console.log('✅ Google login success:', result.user);
+        // Aquí puedes llamar a tu backend con el token si lo necesitas:
+        result.user.getIdToken().then(token => {
+          console.log('🔑 Firebase ID token:', token);
+          // Aquí podrías hacer POST al backend Django con este token.
+        });
       })
-    }
-
+      .catch((error) => {
+        console.error('❌ Error en login con Google:', error);
+      });
+  }
 
   goToRegister(){
     this.router.navigate(["register"])

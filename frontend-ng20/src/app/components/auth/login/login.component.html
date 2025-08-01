@@ -45,13 +45,7 @@
             </button>
         </div>
         <div class="flex justify-center p-4 m-2">
-            <asl-google-signin-button 
-            (signIn)="googleAuth()" 
-            type="standard"
-            theme="outline"
-            shape="rectangular"
-            size="large">
-            </asl-google-signin-button>
+           <button (click)="loginWithGoogle()">Iniciar sesión con Google</button>
         </div>
     </form>
     </div>

@@ -57,6 +57,7 @@ class LoginView(APIView):
             token, created = Token.objects.get_or_create(user=user)
             return Response({
                 "token": token.key,
+                "userID":user.id
             }, status=200)
         else:
             return Response({"error": "Invalid credentials"}, status=401)
