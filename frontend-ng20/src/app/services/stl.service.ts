@@ -2,14 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { STL, STLOnAlbum, STLWithId } from '../models/STL.models';
-
+import { getDownloadURL , ref, uploadBytes } from 'firebase/storage';
+import { Storage } from '@angular/fire/storage';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable({
   providedIn: 'root'
 })
 export class StlService { 
 
   apiUrl = "http://localhost:8000/stls/"
-  constructor(private http:HttpClient) { }
+
+
+  constructor(
+    private http:HttpClient, 
+    private storage: Storage  
+  ) { }
 
 
   createSTL(stlData:FormData):Observable<any>{
@@ -51,14 +58,23 @@ export class StlService {
     return this.http.delete<any>(`${this.apiUrl}stlAlbumEntry/delete/${stlAlbumEntryID}/`);
   }
 
-  // test
-  uploadFileToCloudinary(file:File){
-    const url = "https://api.cloudinary.com/v1_1/STLMarketPlace/upload";
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'STLmarketPlace');
+   // 📁 Subir archivo STL (privado)
+  async uploadSTL(file: File, userId: string): Promise<string> {
+    const uniqueName = `${uuidv4()}_${file.name}`;
+    const storageRef = ref(this.storage, `user_uploads/${userId}/${uniqueName}`);
+    const snapshot = await uploadBytes(storageRef, file);
 
-    return this.http.post(url, formData);
+    // 👇 Opcional: puedes devolver la ruta y no la URL si usarás signed URLs
+    return getDownloadURL(snapshot.ref); // Devuelve la URL de descarga (si permites firmadas)
+  }
+
+  // 🖼️ Subir imagen de preview (pública)
+  async uploadImagePreview(file: File): Promise<string> {
+    const uniqueName = `${uuidv4()}_${file.name}`;
+    const storageRef = ref(this.storage, `public_previews/${uniqueName}`);
+    const snapshot = await uploadBytes(storageRef, file);
+
+    return getDownloadURL(snapshot.ref); // Esta URL es pública por reglas → puedes mostrarla directamente
   }
 
 

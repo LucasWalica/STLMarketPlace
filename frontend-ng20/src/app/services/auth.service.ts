@@ -1,15 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { SocialUser } from '@abacritt/angularx-social-login';
-
+import { Auth, user, User } from '@angular/fire/auth';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http:HttpClient) { }
+
+  userId:number = {} as number;
+
+  constructor(
+    private http:HttpClient, 
+    private ngZone:NgZone
+  ){
+  }
 
   private apiUrl = "http://localhost:8000/auth/"
 
@@ -17,7 +25,9 @@ export class AuthService {
     const data = { username, password };
     return this.http.post<any>(`${this.apiUrl}login/`, data).pipe(
       tap(response => {
+        console.log(response)
         localStorage.setItem("stlMarketToken", response.token);
+        this.userId = response.userId; 
       })
     );
   }
@@ -42,6 +52,7 @@ export class AuthService {
       }
     })
   }
+
 
   logout(): void {
     localStorage.removeItem('stlMarketToken');

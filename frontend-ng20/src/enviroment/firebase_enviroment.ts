@@ -1,4 +1,4 @@
-const firebaseConfig = {
+export const firebaseConfig = {
 
   apiKey: "AIzaSyDyAg-QkUmamHEJStGAktXenoQP4Hvd6xc",
 

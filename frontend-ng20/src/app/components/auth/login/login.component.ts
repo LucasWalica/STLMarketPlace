@@ -4,13 +4,13 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-
-
+import { environment } from '../../../../enviroment/enviroment';
 @Component({
   selector: 'app-login',
   imports: [CommonModule, ReactiveFormsModule, GoogleSigninButtonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  standalone: true,
 })
 export class LoginComponent implements OnInit {
 

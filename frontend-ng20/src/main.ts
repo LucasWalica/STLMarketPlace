@@ -6,20 +6,23 @@ import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { SOCIAL_AUTH_SERVICE_CONFIG } from './app/social-login.token';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import { environment } from './enviroment/enviroment';
 import { routes } from './app/app.routes';
 import { authInterceptor } from './app/interceptors/auth.interceptor'
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { firebaseConfig } from './enviroment/firebase_enviroment';
+
 
 bootstrapApplication(App, {
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])),
-    importProvidersFrom(
-      SocialLoginModule,
-    ),
-    provideRouter(routes),
-    {
-      provide: 'SocialAuthServiceConfig',
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideStorage(() => getStorage()),
+   {
+      provide: SOCIAL_AUTH_SERVICE_CONFIG,
       useValue: {
         autoLogin: false,
         providers: [
@@ -28,7 +31,9 @@ bootstrapApplication(App, {
             provider: new GoogleLoginProvider(environment.googleClientId),
           },
         ],
-      } as SocialAuthServiceConfig,
-    }
-  ],
+      },
+    },
+    importProvidersFrom(SocialLoginModule),
+    provideRouter(routes),
+  ], 
 });

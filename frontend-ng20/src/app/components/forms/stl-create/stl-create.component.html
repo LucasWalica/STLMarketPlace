@@ -26,12 +26,12 @@
 
    <!-- STL Zip Upload -->
     <div>
-    <label class="block font-semibold mb-1">STL Zip File:</label>
+    <label class="block font-semibold mb-1">STL Zip or STL File:</label>
     <input
         type="file"
         (change)="onFileSelected($event)"
         required
-        accept=".zip"
+        accept=".zip, .stl"
         class="block w-full border rounded p-2"
     />
     </div>
