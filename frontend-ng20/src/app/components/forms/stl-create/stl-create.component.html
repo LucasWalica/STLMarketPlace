@@ -11,6 +11,17 @@
         placeholder="Enter STL model name"
         class="w-full border rounded p-2"
       />
+      <div>
+        @if (!this.postSTLForm.valid && this.postSTLForm.get("name")?.touched) {
+          @if (this.postSTLForm.get("name")?.errors?.["required"]) {
+            <h2 class="inputAlert">Name is required</h2>
+          }@else if(this.postSTLForm.get("name")?.errors?.["minlength"]){
+            <h2 class="inputAlert">Name requires at least 6 characters </h2>
+          }@else if (this.postSTLForm.get("name")?.errors?.["maxLength"]) {
+            <h2 class="inputAlert">Name cannot exceed 30 characters</h2>
+          }
+        }
+      </div>
     </div>
 
     <!-- Description -->
@@ -22,6 +33,17 @@
         rows="4"
         class="w-full border rounded p-2"
       ></textarea>
+      <div>
+        @if (!this.postSTLForm.valid && this.postSTLForm.get("description")?.touched) {
+          @if (this.postSTLForm.get("description")?.errors?.["required"]) {
+            <h2 class="inputAlert">Description is required</h2>
+          }@else if(this.postSTLForm.get("description")?.errors?.["minlength"]){
+            <h2 class="inputAlert">Description requires at least 25 characters</h2>
+          }@else if (this.postSTLForm.get("description")?.errors?.["maxlength"]) {
+            <h2 class="inputAlert">Description cannot exceed 300 characters</h2>
+          }
+        }
+      </div>
     </div>
 
    <!-- STL Zip Upload -->
@@ -49,28 +71,46 @@
     </div>
 
 
-    <!-- Optional Fields -->
+    <!-- Categories and price -->
     <div class="grid grid-cols-1 gap-3">
-      <input
-        type="text"
+      <ng-select
+        [items]="categoryOptions"
+        bindLabel="label"
+        bindValue="value"
+        [searchable]="true"
         formControlName="category1"
-        placeholder="Category 1 (optional)"
-        class="w-full border rounded p-2"
-      />
-      <input
-        type="text"
+        placeholder="Select Category 1"
+        class="w-full border rounded p-2 bg-white"
+      ></ng-select>
+
+      <ng-select
+        [items]="categoryOptions"
+        bindLabel="label"
+        bindValue="value"
+        [searchable]="true"
         formControlName="category2"
-        placeholder="Category 2 (optional)"
-        class="w-full border rounded p-2"
-      />
+        placeholder="Select Category 2"
+        class="w-full border rounded p-2 bg-white"
+      ></ng-select>
+
       <input
         type="number"
         formControlName="price"
         placeholder="Price (min 2€)"
         min="2"
         step="0.01"
-        class="w-full border rounded p-2"
+        class="w-full border rounded p-2 bg-white"
+        appearance="outline"
       />
+      <div>
+        @if (!this.postSTLForm.valid && this.postSTLForm.get("price")?.touched) {
+          @if (this.postSTLForm.get("price")?.errors?.["required"]) {
+            <h2 class="inputAlert">Price is required</h2>
+          }@else if(this.postSTLForm.get("price")?.errors?.["min"]){
+            <h2 class="inputAlert">Price has to be 2 euro or more</h2>
+          }
+        }
+      </div>
     </div>
 
     <!-- Submit Button -->

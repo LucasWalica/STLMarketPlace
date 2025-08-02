@@ -7,11 +7,14 @@ import { StlService } from '../../../services/stl.service';
 import { Router } from '@angular/router';
 import { AuthService } from "../../../services/auth.service";
 import { HttpClient } from '@angular/common/http';
+import { STLCategories } from "../../../models/category.models";
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 @Component({
   selector: 'app-stl-create',
   standalone: true,
-  imports: [NavbarComponent, ReactiveFormsModule, CommonModule],
+  imports: [NavbarComponent, ReactiveFormsModule, CommonModule, NgSelectModule],
   templateUrl: './stl-create.component.html',
   styleUrl: './stl-create.component.css'
 })
@@ -19,6 +22,7 @@ export class StlCreateComponent {
   postSTLForm: FormGroup;
   selectedFile: File | null = null;
   selectedImages: File[] = [];
+  categoryOptions = Object.values(STLCategories);
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +36,7 @@ export class StlCreateComponent {
       description: ["", [Validators.required, Validators.minLength(25), Validators.maxLength(300)]],
       category1: ["", Validators.required],
       category2: ["", Validators.required],
-      price: [null, [Validators.min(2)]],  // ← Validación del precio mínimo si aplica
+      price: [null, [Validators.required ,Validators.min(2)]],  // ← Validación del precio mínimo si aplica
     });
   }
 

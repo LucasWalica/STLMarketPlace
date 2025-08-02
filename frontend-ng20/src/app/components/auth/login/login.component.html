@@ -28,7 +28,7 @@
                     @if (this.loginForm.get("password")?.errors?.["required"]) {
                         <h2 class="inputAlert">Password is required</h2>
                     }@else if (this.loginForm.get("password")?.errors?.["minlength"]) {
-                        <h2 class="inputAlert">Password need to ahve at least 6 characters</h2>
+                        <h2 class="inputAlert">Password need to have at least 6 characters</h2>
                     }@else if (this.loginForm.get("password")?.errors?.["maxlength"]) {
                         <h2 class="inputAlert">Password cannot exceed 20 characters</h2>
                     }
