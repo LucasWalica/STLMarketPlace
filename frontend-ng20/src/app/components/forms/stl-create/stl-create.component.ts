@@ -25,22 +25,21 @@ export class StlCreateComponent {
     private stlService: StlService,
     private router: Router,
     private http: HttpClient,
-    private auth: AuthService, 
+    private auth: AuthService,
   ) {
     this.postSTLForm = this.fb.group({
       name: ["", [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       description: ["", [Validators.required, Validators.minLength(25), Validators.maxLength(300)]],
       category1: ["", Validators.required],
       category2: ["", Validators.required],
-      price: [""],
+      price: [null, [Validators.min(2)]],  // ← Validación del precio mínimo si aplica
     });
   }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    console.log(file?.name.endsWith(".stl"))
-    console.log(file)
+
     if (file) {
       const ext = file.name.split('.').pop()?.toLowerCase();
       if (ext === 'stl' || ext === 'zip') {
@@ -70,31 +69,30 @@ export class StlCreateComponent {
   }
 
   async onSubmit() {
-    console.log("valid: ",this.postSTLForm.valid)
-    console.log(this.postSTLForm.value)
-    console.log("selectedfile",this.selectedFile)
     if (!this.postSTLForm.valid || !this.selectedFile) {
-      alert("Please fill the form correctly and select a .stl file.");
+      alert("Please complete all required fields and select a .stl or .zip file.");
       return;
     }
 
-
     try {
-      // ✅ Subir STL
-      const stlUrl = await this.stlService.uploadSTL(this.selectedFile, this.auth.userId.toString());
+      const userId = localStorage.getItem("userId") ?? "";
+      if (!userId) throw new Error("User ID is missing!");
 
-      // ✅ Subir imágenes
+      // ✅ 1. Subir STL a Firebase
+      const stlUrl = await this.stlService.uploadSTL(this.selectedFile, userId);
+
+      // ✅ 2. Subir imágenes (opcional)
       const imageUrls: string[] = [];
       for (const image of this.selectedImages) {
         const url = await this.stlService.uploadImagePreview(image);
         imageUrls.push(url);
       }
 
-      // 📦 Enviar datos al backend (Django)
+      // ✅ 3. Enviar metadata al backend Django
       const payload = {
         ...this.postSTLForm.value,
         file_url: stlUrl,
-        images: imageUrls
+        images: imageUrls,
       };
 
       this.stlService.createSTL(payload).subscribe({
@@ -104,6 +102,7 @@ export class StlCreateComponent {
         },
         error: (err) => {
           console.error("Upload failed:", err);
+          alert("Server rejected the upload.");
         }
       });
 
@@ -113,6 +112,3 @@ export class StlCreateComponent {
     }
   }
 }
-
-
-

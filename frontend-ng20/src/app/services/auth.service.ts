@@ -11,8 +11,6 @@ import { firstValueFrom } from 'rxjs';
 export class AuthService {
 
 
-  userId:number = {} as number;
-
   constructor(
     private http:HttpClient, 
     private ngZone:NgZone
@@ -27,7 +25,7 @@ export class AuthService {
       tap(response => {
         console.log(response)
         localStorage.setItem("stlMarketToken", response.token);
-        this.userId = response.userId; 
+        localStorage.setItem("userId", response.userID)
       })
     );
   }
@@ -46,6 +44,7 @@ export class AuthService {
       next: (response) => {
         console.log("Login exitoso",response.token);
         localStorage.setItem("stlMarketToken", response.token);
+        //localStorage.setItem("userId", response.userId)
       },
       error: (err) => {
         console.error("Error: ", err);

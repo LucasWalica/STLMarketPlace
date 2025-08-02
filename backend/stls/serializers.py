@@ -7,13 +7,18 @@ class ImageSerialzer(serializers.ModelSerializer):
     
     class Meta:
         model = STLNormalImage
-        fields = ["imageUrl"]
+        fields = ["file_url"]
 
 
 class STLSerializer(serializers.ModelSerializer):
 
     likes = serializers.IntegerField(read_only=True)
     downloads = serializers.IntegerField(read_only=True)
+    images = serializers.ListField(
+        child=serializers.URLField(),
+        write_only=True,
+        required=False
+    )
 
     class Meta:
         model = STL
@@ -21,7 +26,7 @@ class STLSerializer(serializers.ModelSerializer):
             "name", "description", 
             "file_url", "category1", 
             "category2", "price",
-            "likes", "downloads"
+            "likes", "downloads", "images"
         ]
         extra_kwargs = {
             "category1": {"required": False, "allow_null": True},
@@ -35,7 +40,7 @@ class STLSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         image_urls = validated_data.pop("images", [])
 
-        stl_instance = STL.objects.create(fkUser=user, **validated_data)
+        stl_instance = STL.objects.create(**validated_data)
         
         for url in image_urls:
             STLNormalImage.objects.create(fkSTL=stl_instance, file_url=url)

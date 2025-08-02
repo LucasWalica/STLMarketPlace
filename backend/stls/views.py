@@ -14,32 +14,27 @@ from django.shortcuts import get_object_or_404
 
 
 class CreateSTLView(generics.CreateAPIView):
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     permission_classes = [IsAuthenticated]
     queryset = STL.objects.all()
     serializer_class = STLSerializer
 
     def perform_create(self, serializer):
-        stl_file = self.request.FILES.get('stl_file')
-        images = self.request.FILES.getlist('images')  # ← ✅ recoger múltiples archivos
+        data = self.request.data
+        stl_instance = serializer.save(
+            fkUser=self.request.user,
+            file_url=data.get("file_url")  # 👈 Firebase file URL
+        )
 
-        if stl_file:
-            upload_result = cloudinary.uploader.upload_large(stl_file, resource_type="auto")
-            stl_instance = serializer.save(
-                fkUser=self.request.user,
-                file_url=upload_result.get('secure_url'),
-                file_public_id=upload_result.get('public_id'),
-            )
-        else:
-            stl_instance = serializer.save(fkUser=self.request.user)
-
-        # ✅ Subir imágenes si existen
-        for image in images:
-            img_result = cloudinary.uploader.upload(image, folder='stl_images')
+        # 👇 Lista de imágenes desde Firebase
+        images = data.getlist("images") if hasattr(data, 'getlist') else data.get("images", [])
+        
+        for image_url in images:
             STLNormalImage.objects.create(
                 fkSTL=stl_instance,
-                file_url=img_result.get('secure_url')
+                file_url=image_url
             )
+
 
 
 

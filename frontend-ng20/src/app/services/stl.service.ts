@@ -61,7 +61,7 @@ export class StlService {
    // 📁 Subir archivo STL (privado)
   async uploadSTL(file: File, userId: string): Promise<string> {
     const uniqueName = `${uuidv4()}_${file.name}`;
-    const storageRef = ref(this.storage, `user_uploads/${userId}/${uniqueName}`);
+    const storageRef = ref(this.storage, `stls/${userId}/${uniqueName}`);
     const snapshot = await uploadBytes(storageRef, file);
 
     // 👇 Opcional: puedes devolver la ruta y no la URL si usarás signed URLs

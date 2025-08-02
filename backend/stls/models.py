@@ -8,7 +8,7 @@ from django.core.validators import MinValueValidator
 class STL(models.Model):
     name = models.CharField(max_length=50, blank=False, null=False)
     description = models.TextField(max_length=300, blank=False, null=False)
-    file_path = models.CharField(max_length=255, blank=True, null=True)
+    file_url = models.URLField(max_length=500, null=True, blank=True)
     fkUser = models.ForeignKey(User, on_delete=models.CASCADE)
     # we can complicate it but for now it will stay like this ( categories could be another table, enum, etc...)
     category1 = models.CharField(max_length=100, blank=True, null=True)
@@ -19,19 +19,17 @@ class STL(models.Model):
 
     
     def __str__(self):
-        return f"{self.pk} {self.name} {self.fkUser.username}"
+        return f"{self.pk} {self.name}"
     
 
 class STLNormalImage(models.Model):
     fkSTL = models.ForeignKey(STL, on_delete=models.CASCADE)
-    file_path = models.CharField(max_length=255, blank=True, null=True)
+    file_url = models.CharField(max_length=255, blank=True, null=True)
 
 #many to many relation
 class STLOnAlbum(models.Model):
     fkAlbum = models.ForeignKey(Album, on_delete=models.DO_NOTHING)
     fkSTL = models.ForeignKey(STL, on_delete=models.DO_NOTHING)
     
-    def __str__(self):
-        return f"Album:{self.fkAlbum.name} STL:{self.fkSTL.name}"
     
 
