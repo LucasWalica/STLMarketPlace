@@ -15,3 +15,5 @@
 ::ng-deep ng-select .ng-dropdown-panel .ng-option.ng-option-marked {
   @apply bg-custom-tulip text-white;
 }
+
+

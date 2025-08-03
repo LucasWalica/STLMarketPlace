@@ -5,31 +5,37 @@ import { NavbarComponent } from "../../reusable/navbar/navbar.component";
 import { ReactiveFormsModule } from '@angular/forms';
 import { StlService } from '../../../services/stl.service';
 import { Router } from '@angular/router';
-import { AuthService } from "../../../services/auth.service";
-import { HttpClient } from '@angular/common/http';
 import { STLCategories } from "../../../models/category.models";
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { StlViewerComponent } from "../../reusable/three-visualizer/three-visualizer";
+import { Loader}  from "../../reusable/loader/loader";
 
 @Component({
   selector: 'app-stl-create',
   standalone: true,
-  imports: [NavbarComponent, ReactiveFormsModule, CommonModule, NgSelectModule],
+  imports: [
+    NavbarComponent,
+    Loader, 
+    ReactiveFormsModule, 
+    CommonModule, 
+    NgSelectModule, 
+    StlViewerComponent
+  ],
   templateUrl: './stl-create.component.html',
   styleUrl: './stl-create.component.css'
 })
 export class StlCreateComponent {
+  
   postSTLForm: FormGroup;
   selectedFile: File | null = null;
   selectedImages: File[] = [];
   categoryOptions = Object.values(STLCategories);
+  uploadingForm:boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private stlService: StlService,
-    private router: Router,
-    private http: HttpClient,
-    private auth: AuthService,
+    private router: Router
   ) {
     this.postSTLForm = this.fb.group({
       name: ["", [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
@@ -82,6 +88,7 @@ export class StlCreateComponent {
       const userId = localStorage.getItem("userId") ?? "";
       if (!userId) throw new Error("User ID is missing!");
 
+      this.uploadingForm = true;
       // ✅ 1. Subir STL a Firebase
       const stlUrl = await this.stlService.uploadSTL(this.selectedFile, userId);
 
@@ -102,16 +109,19 @@ export class StlCreateComponent {
       this.stlService.createSTL(payload).subscribe({
         next: (res) => {
           console.log("STL saved:", res);
+          this.uploadingForm = false;
           this.router.navigate(['/explore']);
         },
         error: (err) => {
           console.error("Upload failed:", err);
+          this.uploadingForm = false;
           alert("Server rejected the upload.");
         }
       });
 
     } catch (err) {
       console.error("Upload error:", err);
+      this.uploadingForm = false;
       alert("Something went wrong during upload.");
     }
   }
