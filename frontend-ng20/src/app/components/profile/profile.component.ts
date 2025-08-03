@@ -8,10 +8,11 @@ import { CommonModule } from '@angular/common';
 import { StlService } from '../../services/stl.service';
 import { AlbumService } from '../../services/album.service';
 import { STL } from '../../models/STL.models';
+import { StlCard } from '../items/stl/stl-card/stl-card';
 
 @Component({
   selector: 'app-profile',
-  imports: [NavbarComponent, CommonModule],
+  imports: [NavbarComponent, CommonModule, StlCard],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -32,6 +33,7 @@ export class ProfileComponent  implements OnInit{
 
   ngOnInit(): void {
     this.getMakerProfileData();
+    this.getownSTLData();
   }
 
 
@@ -49,8 +51,9 @@ export class ProfileComponent  implements OnInit{
 
   getownSTLData(){
     this.stlService.listSTLByOwner().subscribe({
-      next: (stl:any)=>{
-        this.ownerSTLs = stl;
+      next: (response:any)=>{
+        this.ownerSTLs = response.results;
+        console.log(this.ownerSTLs)
       },
       error: (error)=>{
         console.log("error")

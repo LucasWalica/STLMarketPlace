@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { STL, STLOnAlbum, STLWithId } from '../models/STL.models';
 import { getDownloadURL , ref, uploadBytes } from 'firebase/storage';
 import { Storage } from '@angular/fire/storage';
+import { HttpParams } from '@angular/common/http';
 import { v4 as uuidv4 } from 'uuid';
+import { PaginatedResponse } from '../models/paginatedResponse.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -41,8 +43,11 @@ export class StlService {
     return this.http.get<STLWithId>(`${this.apiUrl}stl/list/${userID}/`);
   }
 
-  listSTLByOwner():Observable<STLWithId>{
-    return this.http.get<STLWithId>(`${this.apiUrl}stl/list/owner`);
+  listSTLByOwner(page:number=1, pageSize:number=10):Observable<PaginatedResponse<STLWithId>>{
+    let params = new HttpParams()
+    .set('page', page.toString())
+    .set('page_size', pageSize.toString());
+    return this.http.get<PaginatedResponse<STLWithId>>(`${this.apiUrl}stl/list/owner`);
   }
 
   listDownloadedSTls():Observable<STLWithId>{

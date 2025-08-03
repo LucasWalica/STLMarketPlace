@@ -103,7 +103,7 @@ export class StlCreateComponent {
       const payload = {
         ...this.postSTLForm.value,
         file_url: stlUrl,
-        images: imageUrls,
+        write_images: imageUrls,
       };
 
       this.stlService.createSTL(payload).subscribe({

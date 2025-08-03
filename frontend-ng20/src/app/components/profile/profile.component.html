@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div>
+<div class="font-orbitron">
     <div class="grid justify-center font-orbitron">
         @if (this.showCreateMakerProfile) {
             <h2 class="text-xl m-2  text-custom-tulip bg-custom-blue-night p-2 rounded-md">
@@ -61,9 +61,16 @@
                 <button (click)="goToPostSTL()" class="button1">Post a new Model</button>
             </div>
             <!--Own stls and albums-->
-            <div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center p-4">
                 @if (this.ownerSTLs.length===0) {
-                    
+                    <h2 class="text-xl text-center">
+                        You havent posted any STL yet, post some and 
+                        create your albums to start selling
+                    </h2>
+                }@else if(this.ownerSTLs.length>0) {
+                    @for (stl of this.ownerSTLs; track stl) {
+                        <app-stl-card [stl]="stl"></app-stl-card>
+                    }
                 }
             </div>
         }
