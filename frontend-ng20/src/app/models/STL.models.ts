@@ -1,7 +1,7 @@
 export interface STL {
   name: string;
   description: string;
-  stlUrl: string;
+  file_url: string;
   category1?: string | null;
   category2?: string | null;
   price?: number | null;

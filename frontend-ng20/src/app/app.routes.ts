@@ -10,7 +10,7 @@ export const routes: Routes = [
   { path: "maker/update", loadComponent:() => import("../../../frontend-ng20/src/app/components/forms/maker-profile-update/maker-profile-update.component").then(m=>m.MakerProfileUpdateComponent)},
   { path: "stl/create", loadComponent:() => import("../../../frontend-ng20/src/app/components/forms/stl-create/stl-create.component").then(m=>m.StlCreateComponent)},
   { path: "stl/update", loadComponent:() => import("../../../frontend-ng20/src/app/components/forms/stl-update/stl-update.component").then(m=>m.StlUpdateComponent)},
-  { path: "stl", loadComponent: () => import("../../../frontend-ng20/src/app/components/items/stl/stl-detail/stl-detail.component").then(m=>m.StlDetailComponent)},
+  // needs stl detail
   { path: "stl/search", loadComponent: () => import("../../../frontend-ng20/src/app/components/items/stl/stl-search/stl-search.component").then(m=>m.StlSearchComponent)},
   { path: "album/create", loadComponent : () => import("../../../frontend-ng20/src/app/components/forms/album-create/album-create.component").then(m=>m.AlbumCreateComponent)},
   { path: "album/update", loadComponent: () => import("../../../frontend-ng20/src/app/components/forms/album-update/album-update.component").then(m=>m.AlbumUpdateComponent)},

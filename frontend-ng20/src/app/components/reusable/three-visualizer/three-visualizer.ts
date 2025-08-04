@@ -1,5 +1,15 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit, NgZone } from '@angular/core';
-import * as THREE from "three";
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+  AfterViewInit,
+  NgZone
+} from '@angular/core';
+
+import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -9,9 +19,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   styles: []
 })
 export class StlViewerComponent implements AfterViewInit, OnChanges {
-  @Input() stlFile!: File | null;
+  @Input() stlFile!: File | null; 
+  @Input() stlUrl!: string | null;
   @ViewChild('viewerContainer', { static: true }) viewerRef!: ElementRef;
-
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
@@ -25,8 +35,12 @@ export class StlViewerComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['stlFile'] && this.stlFile) {
-      this.loadSTL(this.stlFile);
+    if (changes['stlFile'] && changes['stlFile'].currentValue) {
+      console.log("Cargando fichero");
+      this.loadSTLFromFile(changes['stlFile'].currentValue);
+    } else{
+      console.log("Cargando archivo");
+      this.loadSTLFromUrl(changes['stlUrl'].currentValue);
     }
   }
 
@@ -62,39 +76,84 @@ export class StlViewerComponent implements AfterViewInit, OnChanges {
     this.animate();
   }
 
-  private loadSTL(file: File) {
+  private loadSTLFromFile(file: File) {
     const reader = new FileReader();
     reader.onload = (event: any) => {
-      const loader = new STLLoader();
-      const geometry = loader.parse(event.target.result);
+      this.parseSTL(event.target.result);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+private loadSTLFromUrl(url: string) {
+  console.log("Intentando cargar STL desde URL:", url); // 💡 Debug inicial
+
+  const loader = new STLLoader();
+
+  loader.load(
+    url,
+    geometry => {
+      console.log("✔ STL cargado correctamente desde URL");
 
       const material = new THREE.MeshPhongMaterial({
         color: 0xddacf5,
         shininess: 100,
-        specular: 0x222222
+        specular: 0x222222,
       });
 
       const mesh = new THREE.Mesh(geometry, material);
 
-      // Clear previous mesh
       if (this.currentMesh) {
         this.scene.remove(this.currentMesh);
       }
 
-      // Auto-center and scale
       geometry.computeBoundingBox();
       const bbox = geometry.boundingBox!;
       const size = bbox.getSize(new THREE.Vector3()).length();
       const center = bbox.getCenter(new THREE.Vector3());
-      mesh.geometry.translate(-center.x, -center.y, -center.z);
-
-      const scale = 50 / size; // scale down if too large
-      mesh.scale.setScalar(scale);
+      geometry.translate(-center.x, -center.y, -center.z);
+      mesh.scale.setScalar(50 / size);
 
       this.currentMesh = mesh;
       this.scene.add(mesh);
-    };
-    reader.readAsArrayBuffer(file);
+    },
+    progress => {
+      console.log("📦 Progreso de carga STL:", progress);
+    },
+    error => {
+      console.error("❌ Error cargando STL:", error); // ⚠️ Revisa esto con atención
+    }
+  );
+}
+
+
+  private parseSTL(buffer: ArrayBuffer) {
+    const loader = new STLLoader();
+    const geometry = loader.parse(buffer);
+
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xddacf5,
+      shininess: 100,
+      specular: 0x222222
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+
+    // Clear previous mesh
+    if (this.currentMesh) {
+      this.scene.remove(this.currentMesh);
+    }
+
+    // Auto-center and scale
+    geometry.computeBoundingBox();
+    const bbox = geometry.boundingBox!;
+    const size = bbox.getSize(new THREE.Vector3()).length();
+    const center = bbox.getCenter(new THREE.Vector3());
+    mesh.geometry.translate(-center.x, -center.y, -center.z);
+
+    const scale = 50 / size;
+    mesh.scale.setScalar(scale);
+
+    this.currentMesh = mesh;
+    this.scene.add(mesh);
   }
 
   private animate = () => {

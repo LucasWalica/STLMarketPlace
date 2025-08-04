@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { StlService } from '../../services/stl.service';
 import { AlbumService } from '../../services/album.service';
 import { STL } from '../../models/STL.models';
-import { StlCard } from '../items/stl/stl-card/stl-card';
+import { StlCard } from '../items/stl/stl-card-owner/stl-card';
 
 @Component({
   selector: 'app-profile',

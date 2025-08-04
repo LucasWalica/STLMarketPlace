@@ -14,6 +14,7 @@ export class StlService {
 
   apiUrl = "http://localhost:8000/stls/"
 
+  selectedSTL:STL = {} as STL;
 
   constructor(
     private http:HttpClient, 

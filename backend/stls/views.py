@@ -118,7 +118,6 @@ class CreateSTLOnAlbumView(generics.CreateAPIView):
     serializer_class = STLOnAlbumSerializer
 
     
-
 class DeleteSTLonAlbumView(generics.DestroyAPIView):
     parser_classes = [JSONParser]
     permission_classes = [IsAuthenticated]
