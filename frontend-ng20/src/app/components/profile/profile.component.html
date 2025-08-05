@@ -52,15 +52,36 @@
 
             <!-- Botón actualizar -->
             <div class="flex items-center">
-                <button (click)="goToMakerUpdate()" class="button3">
+                <button class="button3" (click)="goToMakerUpdate()">
                     Update profile
                 </button>
             </div>
             </div>
             <div class="flex justify-center gap-4 mt-2">
-                <button (click)="goToPostSTL()" class="button1">Post a new Model</button>
+                <button (click)="goToPostSTL()" class="button1">
+                    Post a new Model
+                </button>
+                
             </div>
             <!--Own stls and albums-->
+            <div class="flex flex-row justify-center gap-4 items-center m-2">
+
+                <button [ngClass]="{
+                    'button3':prevPageAvaible,
+                    'button4':!prevPageAvaible
+                }" (click)="this.previousPage()">
+                    Previous Page
+                </button>
+
+                <p class="font-audiowide text-lg">Current page: {{this.page}}</p>
+                
+                <button [ngClass]="{
+                'button3': nextPageAvaible,
+                'button4': !nextPageAvaible
+            }" (click)="this.nextPage()">
+                    Next Page
+                </button>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center p-4">
                 @if (this.ownerSTLs.length===0) {
                     <h2 class="text-xl text-center">
@@ -68,6 +89,7 @@
                         create your albums to start selling
                     </h2>
                 }@else if(this.ownerSTLs.length>0) {
+                    <!--pagination-->
                     @for (stl of this.ownerSTLs; track stl) {
                         <app-stl-card [stl]="stl"></app-stl-card>
                     }

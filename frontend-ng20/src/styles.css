@@ -26,6 +26,10 @@ body{
     text-white font-audiowide py-3 px-6 rounded-lg shadow-md 
     transition
 }
+.button4 {
+    @apply bg-custom-dark-pink text-white font-audiowide 
+    py-3 px-6 rounded-lg shadow-md
+}
 
 .input1 {
     @apply rounded-md bg-custom-violet text-center 

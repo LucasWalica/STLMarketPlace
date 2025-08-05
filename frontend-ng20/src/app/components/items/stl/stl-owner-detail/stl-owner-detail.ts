@@ -23,7 +23,7 @@ export class StlOwnerDetail implements OnInit {
 
   ngOnInit(): void {
     this.stl = this.stlService.selectedSTL
-    if(!this.stl){
+    if(!this.stl.file_url){
       this.router.navigate(["profile"])
     }
   }

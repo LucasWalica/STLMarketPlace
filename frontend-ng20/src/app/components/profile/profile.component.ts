@@ -10,6 +10,7 @@ import { AlbumService } from '../../services/album.service';
 import { STL } from '../../models/STL.models';
 import { StlCard } from '../items/stl/stl-card-owner/stl-card';
 import { StlViewerComponent } from "../reusable/three-visualizer/three-visualizer";
+import { ConstantColorFactor } from 'three';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,9 @@ export class ProfileComponent  implements OnInit{
   maker:Maker = {} as Maker; 
   showCreateMakerProfile: boolean = false;
   ownerSTLs:STL[] = [] as STL[];
+  page:number = 1;
+  nextPageAvaible:boolean = false;
+  prevPageAvaible:boolean = false;
 
   constructor(
     private auth:AuthService, 
@@ -34,7 +38,7 @@ export class ProfileComponent  implements OnInit{
 
   ngOnInit(): void {
     this.getMakerProfileData();
-    this.getownSTLData();
+    this.getownSTLData(this.page);
   }
 
 
@@ -50,16 +54,31 @@ export class ProfileComponent  implements OnInit{
   }
 
 
-  getownSTLData(){
-    this.stlService.listSTLByOwner().subscribe({
+  getownSTLData(page:number){
+    this.stlService.listSTLByOwner(page, 4).subscribe({
       next: (response:any)=>{
         this.ownerSTLs = response.results;
-        console.log(this.ownerSTLs)
+        this.checkPagesAvaibility(response);
+        console.log(response)
       },
       error: (error)=>{
         console.log("error")
       }
     })
+  }
+
+  nextPage(){
+    if(this.nextPageAvaible){
+      this.page++;
+      this.getownSTLData(this.page);
+    }
+  }
+
+  previousPage(){
+    if(this.prevPageAvaible){
+      this.page--;
+      this.getownSTLData(this.page)
+    }
   }
 
   getMakerProfileData(){
@@ -76,5 +95,18 @@ export class ProfileComponent  implements OnInit{
       }
     }
     });
+  }
+
+  checkPagesAvaibility(response:any){
+    if(response.next){
+        this.nextPageAvaible = true;
+      }else{
+        this.nextPageAvaible = false;
+      }
+      if(response.previous){
+        this.prevPageAvaible=true;
+      }else{
+        this.prevPageAvaible=false
+    }
   }
 }

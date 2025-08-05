@@ -28,7 +28,7 @@ export class StlCreateComponent {
   
   postSTLForm: FormGroup;
   selectedFile: File | null = null;
-  selectedImages: File[] = [];
+  selectedImage: File | null = null;
   categoryOptions = Object.values(STLCategories);
   uploadingForm:boolean = false;
 
@@ -62,21 +62,19 @@ export class StlCreateComponent {
     }
   }
 
-  onImagesSelected(event: Event) {
+  onImageSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      const files = Array.from(input.files).filter(file =>
-        ['image/jpeg', 'image/png', 'image/webp'].includes(file.type)
-      );
+    const file = input.files?.[0];
 
-      if (files.length > 4) {
-        alert("You can upload a maximum of 4 images.");
-        return;
-      }
-
-      this.selectedImages = files;
+    if (file && ['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      this.selectedImage = file;
+    } else {
+      alert("Only JPG, PNG or WEBP images are allowed.");
+      this.selectedImage = null;
+      input.value = '';
     }
   }
+
 
   async onSubmit() {
     if (!this.postSTLForm.valid || !this.selectedFile) {
@@ -94,10 +92,11 @@ export class StlCreateComponent {
 
       // ✅ 2. Subir imágenes (opcional)
       const imageUrls: string[] = [];
-      for (const image of this.selectedImages) {
-        const url = await this.stlService.uploadImagePreview(image);
+      if (this.selectedImage) {
+        const url = await this.stlService.uploadImagePreview(this.selectedImage);
         imageUrls.push(url);
       }
+
 
       // ✅ 3. Enviar metadata al backend Django
       const payload = {
@@ -110,7 +109,7 @@ export class StlCreateComponent {
         next: (res) => {
           console.log("STL saved:", res);
           this.uploadingForm = false;
-          this.router.navigate(['/explore']);
+          this.router.navigate(["profile"]);
         },
         error: (err) => {
           console.error("Upload failed:", err);

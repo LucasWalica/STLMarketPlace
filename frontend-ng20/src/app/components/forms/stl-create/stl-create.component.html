@@ -68,16 +68,15 @@
     
     </div>
 
-    <!-- Preview Images -->
+    <!-- Preview Image -->
     <div>
-    <label class="block font-semibold mb-1">Preview Images (Max 4):</label>
-    <input
-        type="file"
-        multiple
-        accept="image/*"
-        (change)="onImagesSelected($event)"
-        class="block w-full border rounded p-2"
-    />
+      <label class="block font-semibold mb-1">Preview Image (Only one):</label>
+      <input
+          type="file"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          class="block w-full border rounded p-2"
+      />
     </div>
 
 

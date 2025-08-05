@@ -24,11 +24,12 @@ class STLSerializer(serializers.ModelSerializer):
 
     # Para leer imágenes al hacer GET
     images = serializers.SerializerMethodField()
+    id = serializers.ReadOnlyField()
 
     class Meta:
         model = STL
         fields = [
-            "fkUser","name", "description",
+            "id","fkUser","name", "description",
             "file_url", "category1",
             "category2", "price",
             "likes", "downloads",

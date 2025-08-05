@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { STL, STLOnAlbum, STLWithId } from '../models/STL.models';
+import { STL, STLOnAlbum } from '../models/STL.models';
 import { getDownloadURL , ref, uploadBytes } from 'firebase/storage';
 import { Storage } from '@angular/fire/storage';
 import { HttpParams } from '@angular/common/http';
@@ -28,31 +28,30 @@ export class StlService {
   }
 
   updateSTL(stlData:STL, stlID:number):Observable<any>{
-    const data = JSON.stringify({stlData});
-    return this.http.put<any>(`${this.apiUrl}stl/update/${stlID}/`, data);
+    return this.http.put<any>(`${this.apiUrl}stl/update/${stlID}/`, stlData);
   }
 
   deleteSTL(STLID:number):Observable<any>{
     return this.http.delete<any>(`${this.apiUrl}stl/delete/${STLID}/`);
   }
 
-  listSTL():Observable<STLWithId>{
-    return this.http.get<STLWithId>(`${this.apiUrl}stl/list`);
+  listSTL():Observable<STL>{
+    return this.http.get<STL>(`${this.apiUrl}stl/list`);
   }
 
-  listSTLByUser(userID:number):Observable<STLWithId>{
-    return this.http.get<STLWithId>(`${this.apiUrl}stl/list/${userID}/`);
+  listSTLByUser(userID:number):Observable<STL>{
+    return this.http.get<STL>(`${this.apiUrl}stl/list/${userID}/`);
   }
 
-  listSTLByOwner(page:number=1, pageSize:number=10):Observable<PaginatedResponse<STLWithId>>{
+  listSTLByOwner(page:number, pageSize:number=4):Observable<PaginatedResponse<STL>>{
     let params = new HttpParams()
     .set('page', page.toString())
     .set('page_size', pageSize.toString());
-    return this.http.get<PaginatedResponse<STLWithId>>(`${this.apiUrl}stl/list/owner`);
+    return this.http.get<PaginatedResponse<STL>>(`${this.apiUrl}stl/list/owner`, {params});
   }
 
-  listDownloadedSTls():Observable<STLWithId>{
-    return this.http.get<STLWithId>(`${this.apiUrl}stl/downloaded/`)
+  listDownloadedSTls():Observable<STL>{
+    return this.http.get<STL>(`${this.apiUrl}stl/downloaded/`)
   }
 
   addSTLtoAlbum(stlAlbumEntry:STLOnAlbum):Observable<any>{
