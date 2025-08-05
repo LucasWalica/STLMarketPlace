@@ -9,8 +9,6 @@ import { StlService } from '../../services/stl.service';
 import { AlbumService } from '../../services/album.service';
 import { STL } from '../../models/STL.models';
 import { StlCard } from '../items/stl/stl-card-owner/stl-card';
-import { StlViewerComponent } from "../reusable/three-visualizer/three-visualizer";
-import { ConstantColorFactor } from 'three';
 
 @Component({
   selector: 'app-profile',

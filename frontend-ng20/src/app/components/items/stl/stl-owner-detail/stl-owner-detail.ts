@@ -14,6 +14,7 @@ import { StlViewerComponent } from "../../../reusable/three-visualizer/three-vis
 export class StlOwnerDetail implements OnInit {
 
   stl:STL = {} as STL;
+  confirmDeletionDialog:boolean = false; 
 
   constructor(
     private stlService:StlService,
@@ -32,5 +33,32 @@ export class StlOwnerDetail implements OnInit {
   goToUpdateSTL(){
     this.stlService.selectedSTL = this.stl
     this.router.navigate(["stl/update"])
+  }
+
+
+
+
+  openDeletionDialog(){
+    this.confirmDeletionDialog=true;
+  }
+  deleteSTL(){
+    const firstImage = this.stl.images?.[0]; // obtiene solo la primera imagen (o undefined)
+    if (firstImage) {
+      this.stlService.deleteImageByUrl(firstImage);
+    }
+    if (this.stl.file_url) {
+      this.stlService.deleteSTLByUrl(this.stl.file_url);
+    }
+    console.log(this.stl.id)
+    if(this.stl.id){
+      this.stlService.deleteSTL(parseInt(this.stl.id?.toString())).subscribe({
+        next: (res)=>{
+          this.router.navigate(["profile"])
+        }, 
+        error : (err) => {
+          console.log("Error during deletion", err)
+        }
+      })
+    }
   }
 }

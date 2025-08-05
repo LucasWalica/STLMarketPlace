@@ -22,6 +22,8 @@ class STL(models.Model):
         return f"{self.pk} {self.name}"
     
 
+#Posible change later, this allows to have more images but mainly in the
+# frontend we allow only one, a little design error
 class STLNormalImage(models.Model):
     fkSTL = models.ForeignKey(STL, on_delete=models.CASCADE)
     file_url = models.CharField(max_length=255, blank=True, null=True)

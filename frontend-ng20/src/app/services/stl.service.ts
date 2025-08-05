@@ -6,6 +6,8 @@ import { getDownloadURL , ref, uploadBytes } from 'firebase/storage';
 import { Storage } from '@angular/fire/storage';
 import { HttpParams } from '@angular/common/http';
 import { v4 as uuidv4 } from 'uuid';
+import { deleteObject, getStorage, ref as storageRefFromUrl } from "firebase/storage";
+
 import { PaginatedResponse } from '../models/paginatedResponse.model';
 @Injectable({
   providedIn: 'root'
@@ -82,5 +84,28 @@ export class StlService {
     return getDownloadURL(snapshot.ref); // Esta URL es pública por reglas → puedes mostrarla directamente
   }
 
+  // 🗑️ Borrar archivo STL por URL
+  async deleteSTLByUrl(fileUrl: string): Promise<void> {
+    try {
+      const storageRef = storageRefFromUrl(this.storage, fileUrl);
+      await deleteObject(storageRef);
+      console.log("✔ STL eliminado correctamente");
+    } catch (error) {
+      console.error("❌ Error al eliminar STL:", error);
+      throw error;
+    }
+  }
+
+  // 🗑️ Borrar imagen preview por URL
+  async deleteImageByUrl(imageUrl: string): Promise<void> {
+    try {
+      const storageRef = storageRefFromUrl(this.storage, imageUrl);
+      await deleteObject(storageRef);
+      console.log("✔ Imagen preview eliminada correctamente");
+    } catch (error) {
+      console.error("❌ Error al eliminar imagen preview:", error);
+      throw error;
+    }
+  }
 
 }
