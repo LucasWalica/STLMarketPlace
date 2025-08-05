@@ -9,6 +9,7 @@ import { StlService } from '../../services/stl.service';
 import { AlbumService } from '../../services/album.service';
 import { STL } from '../../models/STL.models';
 import { StlCard } from '../items/stl/stl-card-owner/stl-card';
+import { Album } from '../../models/album.model';
 
 @Component({
   selector: 'app-profile',
@@ -22,9 +23,15 @@ export class ProfileComponent  implements OnInit{
   maker:Maker = {} as Maker; 
   showCreateMakerProfile: boolean = false;
   ownerSTLs:STL[] = [] as STL[];
+  ownerAlbums:Album[] = [] as Album[];
   page:number = 1;
+  albumPage:number=1;
   nextPageAvaible:boolean = false;
   prevPageAvaible:boolean = false;
+  
+  
+  showSTLs:boolean = true; 
+  showAlbums:boolean = true;
 
   constructor(
     private auth:AuthService, 
@@ -37,6 +44,17 @@ export class ProfileComponent  implements OnInit{
   ngOnInit(): void {
     this.getMakerProfileData();
     this.getownSTLData(this.page);
+  }
+
+  showAlbumsfunc(){
+    this.showSTLs = false;
+    this.showAlbums = true;
+    this.getOwnAlbumData(this.albumPage)
+  }
+
+  showSTLsfunc(){
+    this.showAlbums = false;
+    this.showSTLs = true;
   }
 
 
@@ -61,6 +79,19 @@ export class ProfileComponent  implements OnInit{
       },
       error: (error)=>{
         console.log("error")
+      }
+    })
+  }
+
+  getOwnAlbumData(page:number){
+    this.albumService.albumListByOwner(page).subscribe({
+      next:(response:any)=>{
+        this.ownerAlbums = response.results; 
+        // needs to check page avaibility
+        console.log(this.ownerAlbums)
+      }, 
+      error: (error)=>{
+        console.log("error: ", error)
       }
     })
   }

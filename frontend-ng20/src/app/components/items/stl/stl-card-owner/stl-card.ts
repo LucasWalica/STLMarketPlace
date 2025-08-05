@@ -24,9 +24,4 @@ export class StlCard {
     this.router.navigate(["stl/own/detail"])
   }
 
-  goToUpdateSTL(stl:STL){
-    this.stlService.selectedSTL = stl;
-    this.router.navigate(["stl/update"])
-  }
-
 }

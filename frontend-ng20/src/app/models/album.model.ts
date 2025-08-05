@@ -1,4 +1,5 @@
 export interface Album {
+  id:number|null;
   name: string;
   description: string;
   price?: number | null;
@@ -6,6 +7,3 @@ export interface Album {
   downloads?: number;     // Read-only
 }
 
-export interface AlbumWithId extends Album {
-  id: number;
-}

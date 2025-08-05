@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Album, AlbumWithId } from '../models/album.model';
+import { Album } from '../models/album.model';
+import { PaginatedResponse } from '../models/paginatedResponse.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,15 +26,18 @@ export class AlbumService {
     return this.http.delete<any>(`${this.apiUrl}delete/${albumID}/`);
   }
 
-  albumList():Observable<AlbumWithId>{
-    return this.http.get<AlbumWithId>(`${this.apiUrl}list/`);  
+  albumList():Observable<Album>{
+    return this.http.get<Album>(`${this.apiUrl}list/`);  
   }
 
-  albumListByUser(userID:number):Observable<AlbumWithId>{
-    return this.http.get<AlbumWithId>(`${this.apiUrl}list/${userID}/`);
+  albumListByUser(userID:number):Observable<Album>{
+    return this.http.get<Album>(`${this.apiUrl}list/${userID}/`);
   }
 
-  albumListByOwner():Observable<AlbumWithId>{
-    return this.http.get<AlbumWithId>(`${this.apiUrl}list/owner/`)
+  albumListByOwner(page:number, pageSize:number=4):Observable<PaginatedResponse<Album>>{
+    let params = new HttpParams()
+    .set("page", page.toString())
+    .set("page_size", pageSize.toString())
+    return this.http.get<PaginatedResponse<Album>>(`${this.apiUrl}list/owner/`, {params})
   }
 }
