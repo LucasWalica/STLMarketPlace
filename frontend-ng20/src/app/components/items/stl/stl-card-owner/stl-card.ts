@@ -6,7 +6,7 @@ import { StlViewerComponent } from "../../../reusable/three-visualizer/three-vis
 
 @Component({
   selector: 'app-stl-card',
-  imports: [StlViewerComponent],
+  imports: [],
   templateUrl: './stl-card.html',
   styleUrl: './stl-card.css'
 })
@@ -21,7 +21,7 @@ export class StlCard {
 
   goToOwnSTL(stl:STL){
     this.stlService.selectedSTL = stl;
-    this.router.navigate(["stl/own"])
+    this.router.navigate(["stl/own/detail"])
   }
 
   goToUpdateSTL(stl:STL){

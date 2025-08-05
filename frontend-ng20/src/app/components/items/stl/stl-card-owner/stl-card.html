@@ -1,43 +1,53 @@
 <div class="w-full sm:w-72 lg:w-80 xl:w-96 h-[700px] flex flex-col 
 justify-between border-2 rounded-md border-custom-blue-night 
 bg-custom-bright-lilac text-custom-violet p-4 m-2 shadow-md 
-transition-transform">
+transition-transform overflow-hidden">
 
-    <h2 class="text-2xl text-center font-audiowide break-words">
-        {{ this.stl.name }}
-    </h2>
+  <!-- Title -->
+  <h2 class="text-2xl text-center font-audiowide break-words min-h-[60px]">
+    {{ this.stl.name }}
+  </h2>
 
-    <div class="flex justify-center my-1">
+  <!-- Image Preview -->
+  <div class="flex justify-center my-1 h-60">
     <img
-        [src]="this.stl.images?.[0] || 'fallback.jpg'"
-        class="rounded-lg object-contain w-full max-w-xs max-h-64 sm:max-h-72"
-        alt="STL preview"
-    />    
+      [src]="this.stl.images?.[0] || 'fallback.jpg'"
+      class="rounded-lg object-contain max-h-full"
+      alt="STL preview"
+    />
+  </div>
+
+  <!-- Description -->
+  <p class="border-2 rounded-md border-custom-blue-night p-3 text-sm sm:text-base text-center whitespace-pre-line break-words 
+    overflow-hidden line-clamp-4 min-h-[100px]
+    max-w-[400px] font-audiowide">
+    {{ this.stl.description }}
+  </p>
+
+  <!-- Categories & Stats -->
+  <div class="mt-2 flex flex-row gap-2 justify-center items-stretch flex-grow">
+    <!-- Categories -->
+    <div class="bg-custom-violet text-custom-bright-lilac p-4 rounded-md flex flex-col items-center gap-2 min-w-[140px]">
+      <h3 class="text-base font-audiowide">Categories</h3>
+      <div class="bg-custom-bright-lilac text-custom-violet font-audiowide px-2 py-1 rounded">
+        {{ this.stl.category1 || 'N/A' }}
+      </div>
+      <div class="bg-custom-bright-lilac text-custom-violet font-audiowide px-2 py-1 rounded">
+        {{ this.stl.category2 }}
+      </div>
     </div>
 
-    <p class="border-2 rounded-md border-custom-blue-night p-3 text-sm sm:text-base text-center whitespace-pre-line break-words">
-        {{ this.stl.description }}
-    </p>
-    <div class="mt-2 flex flex-row gap-2 justify-center items-center">
-        <!-- Categories -->
-        <div class="bg-custom-violet text-custom-bright-lilac p-4 rounded-md flex flex-col items-center gap-2 min-w-[140px]">
-            <h3 class="text-base font-audiowide">Categories</h3>
-            <div class="bg-custom-bright-lilac text-custom-violet font-audiowide px-2 py-1 rounded">
-                {{ this.stl.category1 || 'N/A' }}
-            </div>
-            <div class="bg-custom-bright-lilac text-custom-violet font-audiowide px-2 py-1 rounded">
-                {{ this.stl.category2 || 'N/A' }}
-            </div>
-        </div>
-        <!-- Stats -->
-        <div class="bg-custom-violet text-custom-bright-lilac p-4 rounded-md flex flex-col items-center gap-2 ">
-            <div class="font-audiowide">Price: <span>{{ this.stl.price }} €</span></div>
-            <div class="font-audiowide">Likes: <span>{{ this.stl.likes }}</span></div>
-            <div class="font-audiowide">Downloads: <span>{{ this.stl.downloads }}</span></div>
-        </div>
+    <!-- Stats -->
+    <div class="bg-custom-violet text-custom-bright-lilac p-4 rounded-md flex flex-col items-center gap-2 flex-grow">
+      <div class="font-audiowide">Price: <span>{{ this.stl.price }} €</span></div>
+      <div class="font-audiowide">Likes: <span>{{ this.stl.likes }}</span></div>
+      <div class="font-audiowide">Downloads: <span>{{ this.stl.downloads }}</span></div>
     </div>
-    <!--buttons-->
-    <div class="flex justify-center gap-4">
-        <button class="button3" (click)="this.goToUpdateSTL(this.stl)">Update STL</button>
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex justify-center gap-4 mt-4">
+    <button class="button3" (click)="this.goToUpdateSTL(this.stl)">Update STL</button>
+    <button class="button1" (click)="this.goToOwnSTL(this.stl)">Details</button>
     </div>
 </div>

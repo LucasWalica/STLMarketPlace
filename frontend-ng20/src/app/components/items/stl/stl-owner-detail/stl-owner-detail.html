@@ -1,0 +1,58 @@
+<app-navbar></app-navbar>
+
+<div class="w-full px-4 py-6">
+  <!-- Title -->
+  <h2 class="text-3xl text-center font-audiowide text-custom-violet mb-8 break-words">
+    {{ this.stl.name }}
+  </h2>
+
+  <!-- Main content grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Left: Image + STL Viewer -->
+    <div class="flex flex-col gap-6">
+      <!-- Image -->
+      <div class="rounded-md border border-custom-blue-night bg-custom-bright-lilac p-4 shadow">
+        <h3 class="text-lg font-audiowide text-center mb-2 text-custom-violet">Attached Image</h3>
+        <img
+          [src]="this.stl.images?.[0] || 'fallback.jpg'"
+          class="rounded-lg object-contain w-full max-h-[400px] mx-auto"
+          alt="STL preview"
+        />
+      </div>
+
+      <!-- STL Viewer -->
+      <div class="rounded-md border border-custom-blue-night bg-custom-bright-lilac p-4 shadow flex flex-col h-auto">
+        <h3 class="text-lg font-audiowide text-center mb-2 text-custom-violet">Attached STL File</h3>
+        <app-stl-viewer [stlUrl]="this.stl.file_url" class="flex-1"></app-stl-viewer>
+      </div>
+    </div>
+
+    <!-- Right: Info Panel -->
+    <div class="flex flex-col gap-6">
+      <!-- Categories -->
+      <div class="bg-custom-violet text-custom-bright-lilac rounded-md p-4 shadow flex flex-col gap-2">
+        <h3 class="text-lg font-audiowide text-center mb-2">Categories</h3>
+        <div class="flex justify-center gap-4 flex-wrap">
+          <div class="bg-custom-bright-lilac text-custom-violet font-audiowide px-3 py-1 rounded">
+            {{ this.stl.category1 || 'N/A' }}
+          </div>
+          <div class="bg-custom-bright-lilac text-custom-violet font-audiowide px-3 py-1 rounded">
+            {{ this.stl.category2 || 'N/A' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="bg-custom-violet text-custom-bright-lilac rounded-md p-4 shadow flex flex-col gap-2 items-center">
+        <div class="font-audiowide text-lg">💶 Price: {{ this.stl.price }} €</div>
+        <div class="font-audiowide text-lg">👍 Likes: {{ this.stl.likes }}</div>
+        <div class="font-audiowide text-lg">📥 Downloads: {{ this.stl.downloads }}</div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-center">
+        <button (click)="goToUpdateSTL()" class="button3">Update STL</button>
+      </div>
+    </div>
+  </div>
+</div>
