@@ -10,11 +10,12 @@ import { PaginatedResponse } from '../models/paginatedResponse.model';
 export class AlbumService {
   apiUrl = "http://localhost:8000/album/";
 
+  selectedAlbum:Album = {} as Album;
+
   constructor(private http:HttpClient) { }
 
   createAlbum(albumData:Album):Observable<any>{
-    const data = JSON.stringify({albumData});
-    return this.http.post<any>(`${this.apiUrl}create/`, data);
+    return this.http.post<any>(`${this.apiUrl}create/`, albumData);
   }
 
   updateAlbum(albumData:Album ,albumID:number):Observable<any>{

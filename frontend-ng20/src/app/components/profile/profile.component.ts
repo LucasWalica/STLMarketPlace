@@ -10,10 +10,18 @@ import { AlbumService } from '../../services/album.service';
 import { STL } from '../../models/STL.models';
 import { StlCard } from '../items/stl/stl-card-owner/stl-card';
 import { Album } from '../../models/album.model';
+import { AlbumCardOwner } from '../items/album/album-card-owner/album-card-owner';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
-  imports: [NavbarComponent, CommonModule, StlCard],
+  imports: [
+    NavbarComponent, 
+    CommonModule, 
+    StlCard, 
+    AlbumCardOwner,
+    FormsModule,
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -26,13 +34,20 @@ export class ProfileComponent  implements OnInit{
   ownerAlbums:Album[] = [] as Album[];
   page:number = 1;
   albumPage:number=1;
+  // page avaibility for stls
   nextPageAvaible:boolean = false;
   prevPageAvaible:boolean = false;
-  
+  // page avaibility for albums
+  albumNextPageAvaible:boolean = false;
+  albumPrevPageAvaible:boolean = false;
   
   showSTLs:boolean = true; 
   showAlbums:boolean = true;
 
+  // dialog to manage albums and stls
+  showAlbumManagingDialog: boolean = false;
+  selectedAlbum:Album = {} as Album;
+  selectedSTLToAdd:STL = {} as STL;
   constructor(
     private auth:AuthService, 
     private router:Router,
@@ -44,12 +59,12 @@ export class ProfileComponent  implements OnInit{
   ngOnInit(): void {
     this.getMakerProfileData();
     this.getownSTLData(this.page);
+    this.getOwnAlbumData(this.albumPage)
   }
 
   showAlbumsfunc(){
     this.showSTLs = false;
     this.showAlbums = true;
-    this.getOwnAlbumData(this.albumPage)
   }
 
   showSTLsfunc(){
@@ -68,6 +83,9 @@ export class ProfileComponent  implements OnInit{
   goToPostSTL(){
     this.router.navigate(["stl/create"])
   }
+  goToPostAlbum(){
+    this.router.navigate(["album/create"])
+  }
 
 
   getownSTLData(page:number){
@@ -75,7 +93,6 @@ export class ProfileComponent  implements OnInit{
       next: (response:any)=>{
         this.ownerSTLs = response.results;
         this.checkPagesAvaibility(response);
-        console.log(response)
       },
       error: (error)=>{
         console.log("error")
@@ -87,8 +104,7 @@ export class ProfileComponent  implements OnInit{
     this.albumService.albumListByOwner(page).subscribe({
       next:(response:any)=>{
         this.ownerAlbums = response.results; 
-        // needs to check page avaibility
-        console.log(this.ownerAlbums)
+        this.checkAlbumPagesAvaibility(response)
       }, 
       error: (error)=>{
         console.log("error: ", error)
@@ -96,18 +112,50 @@ export class ProfileComponent  implements OnInit{
     })
   }
 
+
+  // function for stl pages
   nextPage(){
     if(this.nextPageAvaible){
       this.page++;
       this.getownSTLData(this.page);
     }
   }
-
+  // function for stl pages
   previousPage(){
     if(this.prevPageAvaible){
       this.page--;
       this.getownSTLData(this.page)
     }
+  }
+
+  albumNextPage(){
+    if(this.albumNextPageAvaible){
+      this.albumPage++;
+      this.getownSTLData(this.albumPage)
+    }
+  }
+
+  albumPrevPage(){
+    if(this.albumPrevPageAvaible){
+      this.albumPage--;
+      this.getOwnAlbumData(this.albumPage)
+    }
+  }
+
+  manageAlbumDialogFunc(){
+    this.showAlbumManagingDialog=!this.showAlbumManagingDialog;
+  }
+
+  selectAlbum(album:Album){
+    this.selectedAlbum = album;
+  }
+
+  addSTLToAlbum(stl:STL){
+
+  }
+
+  removeSTLFromAlbum(stl:STL){
+
   }
 
   getMakerProfileData(){
@@ -136,6 +184,19 @@ export class ProfileComponent  implements OnInit{
         this.prevPageAvaible=true;
       }else{
         this.prevPageAvaible=false
+    }
+  }
+
+  checkAlbumPagesAvaibility(response:any){
+    if(response.next){
+        this.albumNextPageAvaible = true;
+      }else{
+        this.albumNextPageAvaible = false;
+      }
+      if(response.previous){
+        this.albumPrevPageAvaible=true;
+      }else{
+        this.albumPrevPageAvaible=false
     }
   }
 }

@@ -15,6 +15,7 @@ export const routes: Routes = [
   { path: "stl/search", loadComponent: () => import("../../../frontend-ng20/src/app/components/items/stl/stl-search/stl-search.component").then(m=>m.StlSearchComponent)},
   { path: "album/create", loadComponent : () => import("../../../frontend-ng20/src/app/components/forms/album-create/album-create.component").then(m=>m.AlbumCreateComponent)},
   { path: "album/update", loadComponent: () => import("../../../frontend-ng20/src/app/components/forms/album-update/album-update.component").then(m=>m.AlbumUpdateComponent)},
+  { path: "album/own/detail", loadComponent: () => import("../app/components/items/album/album-detail-owner/album-detail-owner").then(m=>m.AlbumDetailOwner)},
   { path: "album", loadComponent:()=> import("../../../frontend-ng20/src/app/components/items/album/album-detail/album-detail.component").then(m=>m.AlbumDetailComponent)},
   { path: "album/search", loadComponent: ()=>import("../../../frontend-ng20/src/app/components/items/album/album-search/album-search.component").then(m=>m.AlbumSearchComponent)},
   { path: "stl/owned", loadComponent: ()=>import("../../../frontend-ng20/src/app/components/items/bought-list/bought-list.component").then(m=>m.BoughtListComponent)},

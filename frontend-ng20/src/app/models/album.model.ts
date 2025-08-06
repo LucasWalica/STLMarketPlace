@@ -1,3 +1,5 @@
+import { STL } from "./STL.models";
+
 export interface Album {
   id:number|null;
   name: string;
@@ -5,5 +7,6 @@ export interface Album {
   price?: number | null;
   likes?: number;         // Read-only
   downloads?: number;     // Read-only
+  stls?:STL[]; 
 }
 
