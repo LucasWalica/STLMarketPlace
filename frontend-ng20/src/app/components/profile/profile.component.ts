@@ -44,13 +44,8 @@ export class ProfileComponent  implements OnInit{
   albumPrevPageAvaible:boolean = false;
   
   showSTLs:boolean = true; 
-  showAlbums:boolean = true;
+  showAlbums:boolean = false;
 
-  // dialog to manage albums and stls
-  showAlbumManagingDialog: boolean = false;
-  selectedAlbum:Album = {} as Album;
-  selectedSTLToAdd:STL = {} as STL;
-  allSTLwithNameAndFkUser:STL[] = [] as STL[];
   constructor(
     private auth:AuthService, 
     private router:Router,
@@ -145,41 +140,7 @@ export class ProfileComponent  implements OnInit{
     }
   }
 
-  manageAlbumDialogFunc(){
-    this.showAlbumManagingDialog=!this.showAlbumManagingDialog;
-    this.stlService.listInputByOwner().subscribe({
-      next:(response:any) => {
-        this.allSTLwithNameAndFkUser = response; 
-      }, 
-      error: (err:any) => {
-        console.log("Error: ", err)
-      }
-    })
-  }
 
-  selectAlbum(album:Album){
-    this.selectedAlbum = album;
-  }
-
-  addSTLToAlbum(stl:any){
-    console.log(this.selectedAlbum)
-    console.log(stl)
-    if(this.selectedAlbum.id && stl){
-      this.stlService.addSTLtoAlbum(this.selectedAlbum.id, stl).subscribe({
-        next:(response)=>{
-          console.log(response);
-          alert("Your stl was added correclty")
-        },
-        error: (error)=>{
-          console.log(error);
-        }
-      })
-    }
-  }
-
-  removeSTLFromAlbum(stl:STL){
-
-  }
 
   getMakerProfileData(){
     this.makerService.ownMakerProfile().subscribe({

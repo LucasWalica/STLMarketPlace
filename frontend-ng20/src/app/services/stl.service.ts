@@ -52,6 +52,17 @@ export class StlService {
     return this.http.get<PaginatedResponse<STL>>(`${this.apiUrl}stl/list/owner`, {params});
   }
 
+  listSTLByAlbumPaginated(page:number, pageSize:number=4, albumID:number):Observable<PaginatedResponse<STL>>{
+    let params = new HttpParams()
+    .set('page', page.toString())
+    .set('page_size', pageSize.toString());
+    return this.http.get<PaginatedResponse<STL>>(`${this.apiUrl}stl/list/album/paginated/${albumID}/`)
+  }
+
+  listSTLByAlbum(albumID:number):Observable<STL>{
+    return this.http.get<STL>(`${this.apiUrl}/list/album/${albumID}/`);
+  }
+
   listInputByOwner():Observable<STL>{
     return this.http.get<STL>(`${this.apiUrl}stl/list/input/`)
   }

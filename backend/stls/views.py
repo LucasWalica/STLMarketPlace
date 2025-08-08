@@ -78,6 +78,26 @@ class STLViewListOwner(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user 
         return STL.objects.filter(fkUser = user)
+
+class STLListByAlbum(generics.ListAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    serializer_class = STLSelectInputSerializer
+
+    def get_queryset(self):
+        album_id = self.kwargs.get("id")
+        return STL.objects.filter(stlonalbum__fkAlbum__id=album_id)
+    
+
+class STLListByAlbumPaginated(generics.ListAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    serializer_class = STLSerializer
+    pagination_class = PaginationSTLViewList
+
+    def get_queryset(self):
+        album_id = self.kwargs.get("id")
+        return STL.objects.filter(stlonalbum__fkAlbum__id=album_id)
     
 # view that allows to see downloaded stls 
 class DownloadedSTLListView(generics.ListAPIView):
