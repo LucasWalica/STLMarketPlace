@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { STL, STLOnAlbum } from '../models/STL.models';
 import { getDownloadURL , ref, uploadBytes } from 'firebase/storage';
@@ -52,13 +52,21 @@ export class StlService {
     return this.http.get<PaginatedResponse<STL>>(`${this.apiUrl}stl/list/owner`, {params});
   }
 
+  listInputByOwner():Observable<STL>{
+    return this.http.get<STL>(`${this.apiUrl}stl/list/input/`)
+  }
+
   listDownloadedSTls():Observable<STL>{
     return this.http.get<STL>(`${this.apiUrl}stl/downloaded/`)
   }
 
-  addSTLtoAlbum(stlAlbumEntry:STLOnAlbum):Observable<any>{
-    const data = JSON.stringify({stlAlbumEntry})
-    return this.http.post<any>(`${this.apiUrl}stlAlbumEntry/create/`, data);
+  addSTLtoAlbum(selctedAlbumID:number, selectedSTLID:number):Observable<any>{
+    const data = {
+      fkAlbum: selctedAlbumID,
+      fkSTL: selectedSTLID
+    };  
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(`${this.apiUrl}stlAlbumEntry/create/`, data, {headers});
   }
 
   deleteSTLFromAlbum(stlAlbumEntryID:number):Observable<any>{

@@ -1,0 +1,19 @@
+/* En tu archivo global styles.css o styles.scss */
+
+::ng-deep ng-select .ng-dropdown-panel {
+  @apply bg-custom-bright-lilac bg-opacity-90 rounded-lg shadow-lg max-h-80 overflow-auto;
+  /* max-h-80 = max-height: 20rem (ajusta según quieras) */
+  /* rounded-lg = bordes redondeados */
+  /* shadow-lg = sombra para destacar */
+}
+
+::ng-deep ng-select .ng-dropdown-panel .ng-option {
+  @apply text-custom-blue-night font-tomorrow cursor-pointer px-4 py-2;
+}
+
+::ng-deep ng-select .ng-dropdown-panel .ng-option:hover,
+::ng-deep ng-select .ng-dropdown-panel .ng-option.ng-option-marked {
+  @apply bg-custom-tulip text-white;
+}
+
+

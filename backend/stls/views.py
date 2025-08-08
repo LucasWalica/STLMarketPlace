@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import STLSerializer, STLOnAlbumSerializer
+from .serializers import STLSerializer, STLOnAlbumSerializer, STLSelectInputSerializer
 from .models import STL, STLOnAlbum, STLNormalImage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import JSONParser
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.contrib.auth.models import User
 from .pagination import PaginationSTLViewList
 from download.models import DownloadsByUser
@@ -95,6 +95,17 @@ class DownloadedSTLListView(generics.ListAPIView):
         # Retorna los objetos STL asociados a esos IDs
         return STL.objects.filter(id__in=downloaded_ids)
 
+
+#view that allows to get all the stls to manage them in the album
+class SelectInputOwnerSTLListView(generics.ListAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    queryset = STL.objects.all()
+    serializer_class = STLSelectInputSerializer
+
+    def get_queryset(self):
+        user = self.request.user 
+        return STL.objects.filter(fkUser = user)
     
 
 class DeleteSTLView(generics.DestroyAPIView):
@@ -116,7 +127,16 @@ class CreateSTLOnAlbumView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = STLOnAlbum.objects.all()
     serializer_class = STLOnAlbumSerializer
+    
+    def perform_create(self, serializer):
+        stl = serializer.validated_data.get("fkSTL")
+        album = serializer.validated_data.get("fkAlbum")
 
+        # Chequeo si la relación ya existe
+        if STLOnAlbum.objects.filter(fkSTL=stl, fkAlbum=album).exists():
+            raise ValidationError("This STL is already added to the album.")
+
+        serializer.save()
     
 class DeleteSTLonAlbumView(generics.DestroyAPIView):
     parser_classes = [JSONParser]
@@ -130,3 +150,5 @@ class DeleteSTLonAlbumView(generics.DestroyAPIView):
         if stlOnAlbum.fkSTL.fkUser != self.request.user:
             raise PermissionDenied("you cannot update this object")
         return stlOnAlbum
+    
+

@@ -10,6 +10,16 @@ class ImageSerialzer(serializers.ModelSerializer):
         fields = ["file_url"]
 
 
+
+class STLSelectInputSerializer(serializers.ModelSerializer):
+    fkUser = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    id = serializers.ReadOnlyField()
+    class Meta:
+        model = STL 
+        fields = [
+            "id","fkUser","name"
+        ]
+
 class STLSerializer(serializers.ModelSerializer):
     fkUser = serializers.HiddenField(default=serializers.CurrentUserDefault())
     likes = serializers.IntegerField(read_only=True)
@@ -60,8 +70,10 @@ class STLSerializer(serializers.ModelSerializer):
 
 
 class STLOnAlbumSerializer(serializers.ModelSerializer):
-    model = STLOnAlbum
-    fields = ["fkAlbum", "fkSTL"]
+
+    class Meta:
+        model = STLOnAlbum
+        fields = ["fkAlbum", "fkSTL"]
 
     def validate(self, data):
         user = self.context['request'].user
@@ -73,5 +85,9 @@ class STLOnAlbumSerializer(serializers.ModelSerializer):
         
         if album.fkUser != user:
             raise serializers.ValidationError("You do not own the album.")
+
+        # ✅ Nombres correctos de los campos
+        if STLOnAlbum.objects.filter(fkSTL=stl, fkAlbum=album).exists():
+            raise serializers.ValidationError("This STL is already added to the album.")
 
         return data

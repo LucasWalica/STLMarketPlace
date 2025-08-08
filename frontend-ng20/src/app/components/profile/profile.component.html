@@ -168,9 +168,14 @@
           <h3 class="text-lg font-semibold mb-2 text-custom-blue-night">Manage STLs in "{{ selectedAlbum.name }}"</h3>
           <div class="mb-2">
             <label class="block mb-1 font-medium text-custom-tulip">Add STL:</label>
-            <select [(ngModel)]="selectedSTLToAdd" class="w-full p-2 border rounded">
-              <option *ngFor="let stl of ownerSTLs" [ngValue]="stl">{{ stl.name }}</option>
-            </select>
+            <ng-select 
+            [items]="allSTLwithNameAndFkUser"
+            bindLabel="name"
+            bindValue="id"
+            [(ngModel)]="selectedSTLToAdd"
+            placeholder="Select an STL"
+            class="w-full">
+            </ng-select>
             <button (click)="addSTLToAlbum(this.selectedSTLToAdd)" class="mt-2 button1 w-full">Add STL</button>
           </div>
 

@@ -5,10 +5,10 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     downloads = serializers.IntegerField(read_only=True)
     likes = serializers.IntegerField(read_only=True) 
-
+    id = serializers.ReadOnlyField()
     class Meta:
         model = Album
-        fields = ["name", "description", "price", "downloads", "likes"] 
+        fields = ["id","name", "description", "price", "downloads", "likes"] 
 
 
     def create(self, validated_data):

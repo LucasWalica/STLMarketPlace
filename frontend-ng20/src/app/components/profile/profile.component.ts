@@ -7,21 +7,23 @@ import { Maker } from '../../models/maker.models';
 import { CommonModule } from '@angular/common';
 import { StlService } from '../../services/stl.service';
 import { AlbumService } from '../../services/album.service';
-import { STL } from '../../models/STL.models';
+import { STL, STLOnAlbum } from '../../models/STL.models';
 import { StlCard } from '../items/stl/stl-card-owner/stl-card';
 import { Album } from '../../models/album.model';
 import { AlbumCardOwner } from '../items/album/album-card-owner/album-card-owner';
 import { FormsModule } from '@angular/forms';
+import { NgSelectComponent } from "@ng-select/ng-select";
 
 @Component({
   selector: 'app-profile',
   imports: [
-    NavbarComponent, 
-    CommonModule, 
-    StlCard, 
+    NavbarComponent,
+    CommonModule,
+    StlCard,
     AlbumCardOwner,
     FormsModule,
-  ],
+    NgSelectComponent
+],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -48,6 +50,7 @@ export class ProfileComponent  implements OnInit{
   showAlbumManagingDialog: boolean = false;
   selectedAlbum:Album = {} as Album;
   selectedSTLToAdd:STL = {} as STL;
+  allSTLwithNameAndFkUser:STL[] = [] as STL[];
   constructor(
     private auth:AuthService, 
     private router:Router,
@@ -144,14 +147,34 @@ export class ProfileComponent  implements OnInit{
 
   manageAlbumDialogFunc(){
     this.showAlbumManagingDialog=!this.showAlbumManagingDialog;
+    this.stlService.listInputByOwner().subscribe({
+      next:(response:any) => {
+        this.allSTLwithNameAndFkUser = response; 
+      }, 
+      error: (err:any) => {
+        console.log("Error: ", err)
+      }
+    })
   }
 
   selectAlbum(album:Album){
     this.selectedAlbum = album;
   }
 
-  addSTLToAlbum(stl:STL){
-
+  addSTLToAlbum(stl:any){
+    console.log(this.selectedAlbum)
+    console.log(stl)
+    if(this.selectedAlbum.id && stl){
+      this.stlService.addSTLtoAlbum(this.selectedAlbum.id, stl).subscribe({
+        next:(response)=>{
+          console.log(response);
+          alert("Your stl was added correclty")
+        },
+        error: (error)=>{
+          console.log(error);
+        }
+      })
+    }
   }
 
   removeSTLFromAlbum(stl:STL){
