@@ -15,28 +15,32 @@
         <h3 class="text-lg font-audiowide text-center mb-2 text-custom-violet">Album Description</h3>
         <p class="text-center text-custom-violet">{{ this.album.description }}</p>
       </div>
-
       <!-- STL List -->
       <div class="rounded-md border border-custom-blue-night bg-custom-bright-lilac p-4 shadow">
         <h3 class="text-lg font-audiowide text-center mb-4 text-custom-violet">Included STLs</h3>
-        <div *ngIf="this.album.stls?.length; else noSTLs" class="flex flex-col gap-4">
-          <div
-            *ngFor="let stl of this.album.stls"
-            class="flex items-center justify-between bg-custom-violet text-custom-bright-lilac p-2 rounded shadow"
-          >
-            <span class="font-audiowide">{{ stl.name }}</span>
-            <button (click)="removeSTLFromAlbum(stl.id)" class="text-red-500 hover:underline">Remove</button>
-          </div>
+        <div class="flex flex-col gap-4">
+            @for (stl of this.includedSTLs; track stl) {
+                <div
+                class="flex items-center justify-between bg-custom-violet text-custom-bright-lilac p-2 rounded shadow"
+                >
+                <span class="font-audiowide">{{ stl.name }}</span>
+                <button (click)="removeSTLFromAlbum(stl.id??0)" class="text-red-500 hover:underline">Remove</button>
+            </div>
+            }
         </div>
-        <ng-template #noSTLs>
-          <p class="text-center text-custom-violet">No STLs added to this album yet.</p>
-        </ng-template>
 
         <!-- Add STL to Album -->
         <div class="mt-4">
-          <label class="block text-custom-violet font-audiowide mb-1">Add STL by ID:</label>
-          <div class="flex gap-2">
-            <input type="number" class="input-field w-full" placeholder="STL" />
+            <div class="flex flex-col justify-center gap-2">
+            <label class="block text-custom-violet font-audiowide mb-1">Add STL:</label>
+            <ng-select
+                [items]="this.stlsToAdd"
+                [(ngModel)]="selectedSTLId"
+                bindLabel="name"
+                bindValue="id"
+                [searchable]="true"
+                class="w-auto  border rounded-md p-2 bg-white"
+            ></ng-select>
             <button (click)="addSTLToAlbum()" class="button3">Add</button>
           </div>
         </div>

@@ -17,8 +17,8 @@ urlpatterns = [
     path("stl/list/album/<int:id>/", STLListByAlbum.as_view()),
     path("stl/list/album/paginated/<int:id>/", STLListByAlbumPaginated.as_view()),
     path("stl/delete/<int:id>/", DeleteSTLView.as_view()),
-    path("stl/list/input/", SelectInputOwnerSTLListView.as_view()),
+    path("stl/list/input/<int:album_id>/", SelectInputOwnerSTLListView.as_view()),
     path("stl/downloaded/", DownloadedSTLListView.as_view()),
     path("stlAlbumEntry/create/", CreateSTLOnAlbumView.as_view()),
-    path("stlAlbumEntry/delete/<int:id>/", DeleteSTLonAlbumView.as_view()),
+    path("stlAlbumEntry/delete/<int:album_id>/<int:stl_id>/", DeleteSTLonAlbumView.as_view()),
 ]

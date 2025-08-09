@@ -59,12 +59,12 @@ export class StlService {
     return this.http.get<PaginatedResponse<STL>>(`${this.apiUrl}stl/list/album/paginated/${albumID}/`)
   }
 
-  listSTLByAlbum(albumID:number):Observable<STL>{
-    return this.http.get<STL>(`${this.apiUrl}/list/album/${albumID}/`);
+  listSTLByAlbum(albumID:number):Observable<STL[]>{
+    return this.http.get<STL[]>(`${this.apiUrl}stl/list/album/${albumID}/`);
   }
 
-  listInputByOwner():Observable<STL>{
-    return this.http.get<STL>(`${this.apiUrl}stl/list/input/`)
+  listInputByOwner(album_id:number):Observable<STL[]>{
+    return this.http.get<STL[]>(`${this.apiUrl}stl/list/input/${album_id}/`)
   }
 
   listDownloadedSTls():Observable<STL>{
@@ -80,8 +80,8 @@ export class StlService {
     return this.http.post<any>(`${this.apiUrl}stlAlbumEntry/create/`, data, {headers});
   }
 
-  deleteSTLFromAlbum(stlAlbumEntryID:number):Observable<any>{
-    return this.http.delete<any>(`${this.apiUrl}stlAlbumEntry/delete/${stlAlbumEntryID}/`);
+  deleteSTLFromAlbum(album_id:number, stl_id:number):Observable<any>{
+    return this.http.delete<any>(`${this.apiUrl}stlAlbumEntry/delete/${album_id}/${stl_id}/`);
   }
 
    // 📁 Subir archivo STL (privado)

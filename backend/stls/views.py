@@ -122,10 +122,14 @@ class SelectInputOwnerSTLListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     queryset = STL.objects.all()
     serializer_class = STLSelectInputSerializer
+    lookup_field = "album_id"
 
     def get_queryset(self):
-        user = self.request.user 
-        return STL.objects.filter(fkUser = user)
+        user = self.request.user
+        album_id = self.kwargs.get("album_id")
+        # Excluir los STLs que ya estén en ese álbum
+        stls_in_album = STLOnAlbum.objects.filter(fkAlbum_id=album_id).values_list('fkSTL_id', flat=True)
+        return STL.objects.filter(fkUser=user).exclude(id__in=stls_in_album)
     
 
 class DeleteSTLView(generics.DestroyAPIView):
@@ -163,12 +167,21 @@ class DeleteSTLonAlbumView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = STLOnAlbum.objects.all()
     serializer_class = STLOnAlbumSerializer
-    lookup_field = "id"
+
 
     def get_object(self):
-        stlOnAlbum = get_object_or_404(STLOnAlbum, id=self.kwargs["id"])
-        if stlOnAlbum.fkSTL.fkUser != self.request.user:
-            raise PermissionDenied("you cannot update this object")
-        return stlOnAlbum
+        album_id = self.kwargs["album_id"]
+        stl_id = self.kwargs["stl_id"]
+
+        stl_on_album = get_object_or_404(
+            STLOnAlbum,
+            fkAlbum_id=album_id,
+            fkSTL_id=stl_id
+        )
+
+        if stl_on_album.fkSTL.fkUser != self.request.user:
+            raise PermissionDenied("You cannot delete this object.")
+
+        return stl_on_album
     
 
