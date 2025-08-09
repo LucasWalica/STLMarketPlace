@@ -25,6 +25,7 @@ export class AlbumDetailOwner implements OnInit {
   stlsToAdd:STL[] = [] as STL[]; 
 
 
+  
   ngOnInit(): void {
     this.album = this.albumService.selectedAlbum; 
     console.log(this.album);
