@@ -168,7 +168,6 @@ class DeleteSTLonAlbumView(generics.DestroyAPIView):
     queryset = STLOnAlbum.objects.all()
     serializer_class = STLOnAlbumSerializer
 
-
     def get_object(self):
         album_id = self.kwargs["album_id"]
         stl_id = self.kwargs["stl_id"]

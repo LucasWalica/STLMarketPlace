@@ -12,8 +12,6 @@ import { StlCard } from '../items/stl/stl-card-owner/stl-card';
 import { Album } from '../../models/album.model';
 import { AlbumCardOwner } from '../items/album/album-card-owner/album-card-owner';
 import { FormsModule } from '@angular/forms';
-import { NgSelectComponent } from "@ng-select/ng-select";
-
 @Component({
   selector: 'app-profile',
   imports: [
@@ -21,8 +19,7 @@ import { NgSelectComponent } from "@ng-select/ng-select";
     CommonModule,
     StlCard,
     AlbumCardOwner,
-    FormsModule,
-    NgSelectComponent
+    FormsModule
 ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'

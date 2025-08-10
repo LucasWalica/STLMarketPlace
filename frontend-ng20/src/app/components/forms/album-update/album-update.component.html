@@ -1,1 +1,82 @@
-<p>album-update works!</p>
+<app-navbar></app-navbar>
+<div class="max-w-xl mx-auto p-4 font-audiowide">
+    @if(this.uploadingForm){
+        <div class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40">
+            <app-loader></app-loader>
+        </div>
+    }
+    <form [formGroup]="updateAlbumForm" 
+        (ngSubmit)="onSubmit()" 
+        class="space-y-6">
+        <!--Album name-->
+        <div>
+            <label class="block font-semibold mb-1">Album Name:</label>
+            <input 
+                type="text"
+                formControlName="name"
+                placeholder="{{this.actualAlbumData.name}}"
+                class="w-full border rounded p-2"
+            />
+            <div>
+                @if (!this.updateAlbumForm.valid && this.updateAlbumForm.get("name")?.touched) {
+                    @if (this.updateAlbumForm.get("name")?.errors?.["required"]) {
+                        <h2 class="inputAlert">Name is required</h2>
+                    }@else if (this.updateAlbumForm.get("name")?.errors?.["minlength"]){
+                        <h2 class="inputAlert">Name requires at least 10 characters</h2>
+                    }@else if(this.updateAlbumForm.get("name")?.errors?.["maxlength"]){
+                        <h2 class="inputAlert">Name cannot exceed 50 characters</h2>
+                    }
+                }
+            </div>
+        </div>
+        <!--Album description-->
+        <div>
+            <label class="block font-semibold mb-1">Album description:</label>
+            <textarea
+                formControlName="description"
+                placeholder="{{this.actualAlbumData.description}}"
+                rows="4"
+                class="w-full border rounded p-2"
+            ></textarea>
+            <div>
+                @if (!this.updateAlbumForm.valid && this.updateAlbumForm.get("description")?.touched) {
+                    @if (this.updateAlbumForm.get("description")?.errors?.["required"]) {
+                        <h2 class="inputAlert">Description is required</h2>
+                    }@else if (this.updateAlbumForm.get("description")?.errors?.["minlength"]) {
+                        <h2 class="inputAlert">Description needs at least 30 characters</h2>
+                    }@else if (this.updateAlbumForm.get("description")?.errors?.["maxlength"]) {
+                        <h2 class="inputAlert">Description cannot exceed 500 characters</h2>
+                    }
+                }
+            </div>
+        </div>
+        <!--Album price-->
+        <div>
+            <label class="block font-semibold mb-1">Price in Euros: </label>
+            <input
+                type="number"
+                formControlName="price"
+                step="0.01"
+                class="w-full border rounded p-2 bg-white"
+                appearance="outline"
+                min="2"
+                placeholder="{{this.actualAlbumData.price}}"
+            />
+            <div>
+            @if (!this.updateAlbumForm.valid && this.updateAlbumForm.get("price")?.touched) {
+                @if (this.updateAlbumForm.get("price")?.errors?.["required"]) {
+                    <h2 class="inputAlert">Price is required</h2>
+                }@else if(this.updateAlbumForm.get("price")?.errors?.["min"]){
+                    <h2 class="inputAlert">Price has to be 2 euro or more</h2>
+                }
+            }
+            </div>
+        </div>
+        <!--Button-->
+        <div class="flex justify-center">
+            <button class="button3">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
