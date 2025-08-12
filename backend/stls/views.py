@@ -57,6 +57,14 @@ class STLViewList(generics.ListAPIView):
     serializer_class = STLSerializer
     pagination_class = PaginationSTLViewList
 
+    def get_queryset(self):
+        user = self.request.user
+        return (
+            STL.objects
+            .exclude(fkUser=user)
+            .order_by('-likes', '-downloads')
+        )
+
 class STLViewListByUser(generics.ListAPIView):
     parser_classes = [JSONParser]
     queryset = STL.objects.all()

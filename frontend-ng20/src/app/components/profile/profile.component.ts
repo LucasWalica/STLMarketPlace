@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { StlService } from '../../services/stl.service';
 import { AlbumService } from '../../services/album.service';
 import { STL, STLOnAlbum } from '../../models/STL.models';
-import { StlCard } from '../items/stl/stl-card-owner/stl-card';
+import { StlCardOwner } from '../items/stl/stl-card-owner/stl-card';
 import { Album } from '../../models/album.model';
 import { AlbumCardOwner } from '../items/album/album-card-owner/album-card-owner';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     NavbarComponent,
     CommonModule,
-    StlCard,
+    StlCardOwner,
     AlbumCardOwner,
     FormsModule
 ],

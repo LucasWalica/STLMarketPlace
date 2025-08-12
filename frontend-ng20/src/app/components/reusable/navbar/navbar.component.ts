@@ -29,10 +29,16 @@ export class NavbarComponent implements OnInit{
     this.router.navigate(["profile"])
   }
   
+  goToHomePage(){
+    this.router.navigate([""])
+  }
+
   logout(){
     this.auth.logout();
     this.router.navigate(["login"])
   }
+
+
 
 
 

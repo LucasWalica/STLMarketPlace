@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlbumDeleteComponent } from './album-delete.component';
+import { StlDetail } from './stl-detail';
 
-describe('AlbumDeleteComponent', () => {
-  let component: AlbumDeleteComponent;
-  let fixture: ComponentFixture<AlbumDeleteComponent>;
+describe('StlDetail', () => {
+  let component: StlDetail;
+  let fixture: ComponentFixture<StlDetail>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AlbumDeleteComponent]
+      imports: [StlDetail]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AlbumDeleteComponent);
+    fixture = TestBed.createComponent(StlDetail);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

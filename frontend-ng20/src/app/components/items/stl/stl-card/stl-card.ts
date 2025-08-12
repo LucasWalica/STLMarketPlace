@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { STL } from '../../../../models/STL.models';
 import { Router } from '@angular/router';
 import { StlService } from '../../../../services/stl.service';
-import { StlViewerComponent } from "../../../reusable/three-visualizer/three-visualizer";
 
 @Component({
   selector: 'app-stl-card',
@@ -10,8 +9,7 @@ import { StlViewerComponent } from "../../../reusable/three-visualizer/three-vis
   templateUrl: './stl-card.html',
   styleUrl: './stl-card.css'
 })
-export class StlCardOwner {
-
+export class StlCard {
   @Input({required:true}) stl!:STL;
 
   constructor(
@@ -19,9 +17,9 @@ export class StlCardOwner {
     private stlService:StlService
   ){ }
 
-  goToOwnSTL(stl:STL){
-    this.stlService.selectedSTL = stl;
-    this.router.navigate(["stl/own/detail"])
-  }
 
+  goToSTLDetail(stl:STL){
+    this.stlService.selectedSTL = stl;
+    this.router.navigate(["stl/detail"])
+  }
 }

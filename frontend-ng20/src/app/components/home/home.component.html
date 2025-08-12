@@ -6,5 +6,37 @@
             <h2 class="text-base font-audiowide">A place to share 3D printed files and earn money</h2>
         </div>
     </div>
+
+
+    @if (this.bestModelSTLs.length===0) {
+        <div></div>
+    }@else {
+
+        <div class="flex flex-col justify-center"> 
+            <div class="flex flex-row justify-center gap-4 m-2 p-2">
+                <button [ngClass]="{
+                        'button3': stlPrevPageAvaible,
+                        'button4': !stlPrevPageAvaible
+                    }" (click)="prevPage()" [disabled]="!stlPrevPageAvaible">
+                    Previous
+                </button>
+                <div class="flex items-center justify-center">
+                    <span class="mx-2">Page</span>
+                    <div class="font-bold">{{this.currentPage}}</div>
+                </div>
+                <button [ngClass]="{
+                        'button3': stlNextPageAvaible,
+                        'button4': !stlNextPageAvaible
+                    }" (click)="nextPage()" [disabled]="!stlNextPageAvaible">
+                    Next
+                </button>
+            </div>
+            <div class="flex">
+                @for (stl of this.bestModelSTLs; track stl) {
+                    <app-stl-card [stl]="stl"></app-stl-card>
+                }
+            </div>
+        </div>
+    }
 </div>
 

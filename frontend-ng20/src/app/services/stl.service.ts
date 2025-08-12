@@ -37,8 +37,11 @@ export class StlService {
     return this.http.delete<any>(`${this.apiUrl}stl/delete/${STLID}/`);
   }
 
-  listSTL():Observable<STL>{
-    return this.http.get<STL>(`${this.apiUrl}stl/list`);
+  listSTL(page:number, pageSize:number=4):Observable<PaginatedResponse<STL>>{
+    let params = new HttpParams()
+    .set('page', page.toString())
+    .set('page_size', pageSize.toString());
+    return this.http.get<PaginatedResponse<STL>>(`${this.apiUrl}stl/list`, {params});
   }
 
   listSTLByUser(userID:number):Observable<STL>{

@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: "stl/update", loadComponent:() => import("../../../frontend-ng20/src/app/components/forms/stl-update/stl-update.component").then(m=>m.StlUpdateComponent)},
   // needs stl detail
   { path: "stl/own/detail", loadComponent:() => import("./components/items/stl/stl-owner-detail/stl-owner-detail").then(m=>m.StlOwnerDetail)},
-  // need to do this one
+  { path: "stl/detail", loadComponent:()=> import("./components/items/stl/stl-detail/stl-detail").then(m=>m.StlDetail)},
   { path: "stl/search", loadComponent: () => import("../../../frontend-ng20/src/app/components/items/stl/stl-search/stl-search.component").then(m=>m.StlSearchComponent)},
   { path: "album/create", loadComponent : () => import("../../../frontend-ng20/src/app/components/forms/album-create/album-create.component").then(m=>m.AlbumCreateComponent)},
   { path: "album/update", loadComponent: () => import("../../../frontend-ng20/src/app/components/forms/album-update/album-update.component").then(m=>m.AlbumUpdateComponent)},
