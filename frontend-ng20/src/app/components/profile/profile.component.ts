@@ -53,6 +53,10 @@ export class ProfileComponent  implements OnInit{
 
   ngOnInit(): void {
     this.getMakerProfileData();
+    if(!this.auth.isAuthenticated()){
+      this.router.navigate([""]);
+      return;
+    }
     this.getownSTLData(this.page);
     this.getOwnAlbumData(this.albumPage)
   }
