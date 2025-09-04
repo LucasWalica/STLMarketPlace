@@ -91,12 +91,20 @@ class STLViewListOwner(generics.ListAPIView):
 
 class STLListByAlbum(generics.ListAPIView):
     parser_classes = [JSONParser]
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     serializer_class = STLSelectInputSerializer
 
     def get_queryset(self):
         album_id = self.kwargs.get("id")
         return STL.objects.filter(stlonalbum__fkAlbum__id=album_id)
+
+
+class STLGetByIdView(generics.RetrieveAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = []
+    queryset = STL.objects.all()
+    serializer_class = STLSerializer
+    lookup_field = "id"
     
 
 class STLListByAlbumPaginated(generics.ListAPIView):

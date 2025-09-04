@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     CreateSTLView, UpdateSTLView, 
     STLViewList, STLViewListByUser, 
-    STLViewListOwner, DeleteSTLView, 
+    STLViewListOwner, DeleteSTLView, STLGetByIdView,
     DownloadedSTLListView,
     DeleteSTLonAlbumView, CreateSTLOnAlbumView, 
     SelectInputOwnerSTLListView, STLListByAlbum, STLListByAlbumPaginated)
@@ -13,6 +13,7 @@ urlpatterns = [
     path("stl/update/<int:id>/", UpdateSTLView.as_view()),
     path("stl/list/", STLViewList.as_view()),
     path("stl/list/<int:user_id>/", STLViewListByUser.as_view()),
+    path("stl/get/<int:id>/", STLGetByIdView.as_view()),
     path("stl/list/owner/", STLViewListOwner.as_view()),
     path("stl/list/album/<int:id>/", STLListByAlbum.as_view()),
     path("stl/list/album/paginated/<int:id>/", STLListByAlbumPaginated.as_view()),

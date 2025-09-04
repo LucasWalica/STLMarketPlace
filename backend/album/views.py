@@ -66,8 +66,18 @@ class AlbumListByUser(generics.ListAPIView):
     
 class AlbumList(generics.ListAPIView):
     parser_classes = [JSONParser]
+    permission_classes = []
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     pagination_class = PaginationAlbumViewList
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = Album.objects.all().order_by('-likes', '-downloads')
+
+        if user.is_authenticated:  
+            qs = qs.exclude(fkUser=user)
+
+        return qs
 
         

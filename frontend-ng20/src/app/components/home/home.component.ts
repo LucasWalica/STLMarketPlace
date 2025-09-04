@@ -7,18 +7,26 @@ import { Router } from '@angular/router';
 import { Album } from '../../models/album.model';
 import { StlCard } from '../items/stl/stl-card/stl-card';
 import { CommonModule } from '@angular/common';
+import { AlbumCard } from '../items/album/album-card/album-card';
 
 
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, StlCard, CommonModule],
+  imports: [NavbarComponent, StlCard, CommonModule, AlbumCard],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit{
 
 
+  searchingForAlbum:boolean = false;
+  searchingForSTL:boolean = false;
+
   bestAlbum:Album[] = [] as Album[];
+  albumPrevPageAvaible:boolean = false;
+  albumNextPageAvaible:boolean = false;
+  albumCurrentPage:number = 1;
+
 
   currentPage:number = 1;
   stlNextPageAvaible:boolean = false; 
@@ -34,7 +42,7 @@ export class HomeComponent implements OnInit{
   ){ }
 
   ngOnInit(): void {
-    this.getSTLData(this.currentPage);
+    this.searchForSTL();
   }
 
   nextPage(){
@@ -50,12 +58,33 @@ export class HomeComponent implements OnInit{
     }
   }
 
+  albumNextPage(){
+    if(this.albumNextPageAvaible){
+      this.albumCurrentPage++;
+      this.getAlbumData(this.albumCurrentPage)
+    }
+  }
+  albumPrevPage(){
+    if(this.albumPrevPageAvaible){
+      this.albumCurrentPage--;
+      this.getAlbumData(this.albumCurrentPage);
+    }
+  }
 
   getSTLData(currentpage:number){
     this.stlService.listSTL(currentpage).subscribe({
       next: (response) => {
         this.checkNextPrevAvaibility(response);
         this.bestModelSTLs =response.results
+      }
+    })
+  } 
+
+  getAlbumData(currentPage:number){
+    this.albumService.albumList(currentPage).subscribe({
+      next: (response) => {
+        this.checkAlbumNextPrevAvaibility(response);
+        this.bestAlbum = response.results;
       }
     })
   }
@@ -71,5 +100,31 @@ export class HomeComponent implements OnInit{
     }else {
       this.stlNextPageAvaible = false;
     }
+  }
+
+  checkAlbumNextPrevAvaibility(response:any){
+    if(response.previous){
+      this.albumPrevPageAvaible = true;
+    }else{
+      this.albumPrevPageAvaible = false;
+    }
+    if(response.next){
+      this.albumNextPageAvaible = true;
+    }else {
+      this.albumNextPageAvaible = false;
+    }
+  }
+
+
+  searchForSTL(){
+    this.searchingForAlbum = false;
+    this.searchingForSTL = true;
+    this.getSTLData(this.currentPage);
+  }
+
+  searchForAlbum(){
+    this.searchingForSTL = false;
+    this.searchingForAlbum = true;
+    this.getAlbumData(this.albumCurrentPage);
   }
 }

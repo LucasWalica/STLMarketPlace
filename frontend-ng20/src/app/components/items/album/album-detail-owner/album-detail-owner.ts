@@ -57,6 +57,7 @@ export class AlbumDetailOwner implements OnInit {
     this.stlService.listSTLByAlbum(album_id).subscribe({
       next:(response)=>{
         this.includedSTLs = response;
+        console.log("response", response);
         this.cdr.detectChanges();
       }, error: (error)=>{
         console.log("error: ", error);

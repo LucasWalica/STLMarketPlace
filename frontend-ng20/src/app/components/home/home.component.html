@@ -7,35 +7,87 @@
         </div>
     </div>
 
+    <div class="flex justify-center">
 
-    @if (this.bestModelSTLs.length===0) {
-        <div></div>
-    }@else {
-        <div class="flex flex-col justify-center"> 
-            <div class="flex flex-row justify-center gap-4 m-2 p-2 text-base">
-                <button [ngClass]="{
-                        'button3': stlPrevPageAvaible,
-                        'button4': !stlPrevPageAvaible
-                    }" (click)="prevPage()" [disabled]="!stlPrevPageAvaible">
-                    Previous
-                </button>
-                <div class="flex items-center justify-center">
-                    <span class="mx-2">Page</span>
-                    <div class="font-bold">{{this.currentPage}}</div>
-                </div>
-                <button [ngClass]="{
-                        'button3': stlNextPageAvaible,
-                        'button4': !stlNextPageAvaible
-                    }" (click)="nextPage()" [disabled]="!stlNextPageAvaible">
-                    Next
-                </button>
-            </div>
-            <div class="flex flex-wrap justify-center gap-4 m-2 p-2">
-                @for (stl of this.bestModelSTLs; track stl) {
-                    <app-stl-card [stl]="stl"></app-stl-card>
-                }
-            </div>
+        <div class="w-1/2 grid md:grid-cols-2 justify-center m-4">
+            <button class="button1 m-2 p-2" (click)="searchForSTL()">
+                Show Best STLs
+            </button>
+            <button class="button1 m-2 p-2" (click)="searchForAlbum()">
+                Show Best Albums
+            </button>
+        
         </div>
-    }
-</div>
+    </div>
 
+    @if (this.searchingForSTL) {
+        @if (this.bestModelSTLs.length>0) {
+            <div class="bg-custom-blue-night m-4 p-4 rounded-md border border-custom-violet shadow">
+                <h2 class="text-2xl text-custom-bright-lilac font-audiowide text-center mb-2">Best STLs</h2>
+            </div>
+            <div class="flex flex-col justify-center"> 
+                <div class="flex flex-row justify-center gap-4 m-2 p-2 text-base">
+                    <button [ngClass]="{
+                            'button3': stlPrevPageAvaible,
+                            'button4': !stlPrevPageAvaible
+                        }" (click)="prevPage()" [disabled]="!stlPrevPageAvaible">
+                        Previous
+                    </button>
+                    <div class="flex items-center justify-center">
+                        <span class="mx-2">Page</span>
+                        <div class="font-bold">{{this.currentPage}}</div>
+                    </div>
+                    <button [ngClass]="{
+                            'button3': stlNextPageAvaible,
+                            'button4': !stlNextPageAvaible
+                        }" (click)="nextPage()" [disabled]="!stlNextPageAvaible">
+                        Next
+                    </button>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 m-2 p-2">
+                    @for (stl of this.bestModelSTLs; track stl) {
+                        <app-stl-card [stl]="stl"></app-stl-card>
+                    }
+                </div>
+            </div>
+        }@else {
+            <div class="text-center text-xl text-custom-bright-lilac font-audiowide m-4 p-4">
+                No STLs found.
+            </div>
+        }
+    }@else if (this.searchingForAlbum){
+        @if (this.bestAlbum.length>0) {
+            <div class="bg-custom-blue-night m-4 p-4 rounded-md border border-custom-violet shadow">
+                <h2 class="text-2xl text-custom-bright-lilac font-audiowide text-center mb-2">Best Albums</h2>
+            </div>
+            <div class="flex flex-col justify-center"> 
+                <div class="flex flex-row justify-center gap-4 m-2 p-2 text-base">
+                    <button [ngClass]="{
+                            'button3': albumPrevPageAvaible,
+                            'button4': !albumPrevPageAvaible
+                        }" (click)="albumPrevPage()"[disabled]="!albumPrevPageAvaible">
+                        Previous
+                    </button>
+                    <div class="flex items-center justify-center">
+                        <span class="mx-2">Page</span>
+                        <div class="font-bold">{{this.albumCurrentPage}}</div>
+                    </div>
+                    <button [ngClass]="{
+                            'button3': albumNextPageAvaible,
+                            'button4': !albumNextPageAvaible
+                        }" (click)="albumNextPage()" [disabled]="!albumNextPageAvaible">
+                        Next
+                    </button>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 m-2 p-2">
+                    @for (album of this.bestAlbum; track album) {
+                        <app-album-card class="font-orbitron text-base" [album]="album"></app-album-card>
+                    }
+                </div> 
+            </div>
+        } @else {
+            <div class="text-center text-xl text-custom-bright-lilac font-audiowide m-4 p-4">
+                No albums found.
+            </div>
+        }
+    }       

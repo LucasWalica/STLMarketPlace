@@ -24,6 +24,11 @@ export class StlService {
   ) { }
 
 
+
+  stlGetByID(stlID:number):Observable<STL>{
+    return this.http.get<STL>(`${this.apiUrl}stl/get/${stlID}/`);
+  }
+
   createSTL(stlData:FormData):Observable<any>{
     const data = stlData
     return this.http.post<any>(`${this.apiUrl}stl/create/`, data);

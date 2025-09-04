@@ -27,8 +27,11 @@ export class AlbumService {
     return this.http.delete<any>(`${this.apiUrl}delete/${albumID}/`);
   }
 
-  albumList():Observable<Album>{
-    return this.http.get<Album>(`${this.apiUrl}list/`);  
+  albumList(page:number, pageSize:number=4):Observable<PaginatedResponse<Album>>{
+    let params = new HttpParams()
+    .set("page", page.toString())
+    .set("page_size", pageSize.toString())
+    return this.http.get<PaginatedResponse<Album>>(`${this.apiUrl}list/`, {params});
   }
 
   albumListByUser(userID:number):Observable<Album>{

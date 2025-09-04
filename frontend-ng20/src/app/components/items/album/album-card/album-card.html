@@ -1,0 +1,25 @@
+<div class="w-full sm:w-72 lg:w-80 xl:w-96 h-[400px] flex flex-col 
+justify-between border-2 rounded-md border-custom-blue-night 
+bg-custom-bright-lilac text-custom-violet p-4 m-2 shadow-md 
+transition-transform overflow-hidden gap-4">
+<!--title-->
+    <h2 class="text-2xl text-center font-audiowide break-words min-h-[60px]">{{this.album.name}}</h2>
+<!--Description-->
+    <p class="border-2 rounded-md border-custom-blue-night p-3 text-sm sm:text-base text-center whitespace-pre-line break-words 
+    overflow-hidden line-clamp-4 min-h-[100px]
+    max-w-[400px] font-audiowide">
+        {{this.album.description}}
+    </p>
+
+    <div class="bg-custom-violet text-custom-bright-lilac p-4 rounded-md flex flex-col items-center gap-2 flex-grow">
+      <div class="font-audiowide">Price: <span>{{ this.album.price }} €</span></div>
+      <div class="font-audiowide">Likes: <span>{{ this.album.likes }}</span></div>
+      <div class="font-audiowide">Downloads: <span>{{ this.album.downloads }}</span></div>
+    </div>
+    <!--buttons-->
+    <div class="flex justify-center">
+        <button (click)="this.goToOwnAlbum()" class="button1">
+            Details
+        </button>
+    </div>
+</div>  
