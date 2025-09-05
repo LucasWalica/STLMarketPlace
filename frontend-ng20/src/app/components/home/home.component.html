@@ -21,11 +21,17 @@
     </div>
 
     @if (this.searchingForSTL) {
-        @if (this.bestModelSTLs.length>0) {
             <div class="bg-custom-blue-night m-4 p-4 rounded-md border border-custom-violet shadow">
                 <h2 class="text-2xl text-custom-bright-lilac font-audiowide text-center mb-2">Best STLs</h2>
             </div>
             <div class="flex flex-col justify-center"> 
+                <div class="flex justify-center flex-row">
+                    <input type="text" placeholder="Search STLs..." 
+                    class="rounded-md p-2 m-2 w-1/2 md:w-1/4 text-black" 
+                    [(ngModel)]="searchSTLInput"
+                    />
+                    <button class="button1" (click)="searchForSTL()">Search</button>
+                </div>
                 <div class="flex flex-row justify-center gap-4 m-2 p-2 text-base">
                     <button [ngClass]="{
                             'button3': stlPrevPageAvaible,
@@ -44,23 +50,30 @@
                         Next
                     </button>
                 </div>
+            @if (this.bestModelSTLs.length>0) {
                 <div class="flex flex-wrap justify-center gap-4 m-2 p-2">
                     @for (stl of this.bestModelSTLs; track stl) {
                         <app-stl-card [stl]="stl"></app-stl-card>
                     }
                 </div>
+            }@else {
+                <div class="text-center text-xl text-custom-bright-lilac font-audiowide m-4 p-4">
+                    No STLs found.
+                </div>
+            }
             </div>
-        }@else {
-            <div class="text-center text-xl text-custom-bright-lilac font-audiowide m-4 p-4">
-                No STLs found.
-            </div>
-        }
     }@else if (this.searchingForAlbum){
-        @if (this.bestAlbum.length>0) {
             <div class="bg-custom-blue-night m-4 p-4 rounded-md border border-custom-violet shadow">
                 <h2 class="text-2xl text-custom-bright-lilac font-audiowide text-center mb-2">Best Albums</h2>
             </div>
             <div class="flex flex-col justify-center"> 
+                <div class="flex justify-center flex-row">
+                    <input type="text" placeholder="Search Albums..." 
+                    class="rounded-md p-2 m-2 w-1/2 md:w-1/4 text-black" 
+                    [(ngModel)]="searchAlbumInput"
+                    />
+                    <button class="button1" (click)="searchForAlbum()">Search</button>
+                </div>
                 <div class="flex flex-row justify-center gap-4 m-2 p-2 text-base">
                     <button [ngClass]="{
                             'button3': albumPrevPageAvaible,
@@ -79,15 +92,16 @@
                         Next
                     </button>
                 </div>
-                <div class="flex flex-wrap justify-center gap-4 m-2 p-2">
-                    @for (album of this.bestAlbum; track album) {
-                        <app-album-card class="font-orbitron text-base" [album]="album"></app-album-card>
-                    }
-                </div> 
-            </div>
-        } @else {
-            <div class="text-center text-xl text-custom-bright-lilac font-audiowide m-4 p-4">
-                No albums found.
-            </div>
-        }
+                @if (this.bestAlbum.length>0) {
+                    <div class="flex flex-wrap justify-center gap-4 m-2 p-2">
+                        @for (album of this.bestAlbum; track album) {
+                            <app-album-card class="font-orbitron text-base" [album]="album"></app-album-card>
+                        }
+                    </div> 
+                } @else {
+                    <div class="text-center text-xl text-custom-bright-lilac font-audiowide m-4 p-4">
+                        No albums found.
+                    </div>
+                }
+        </div>
     }       

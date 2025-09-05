@@ -5,7 +5,8 @@ from .views import (
     STLViewListOwner, DeleteSTLView, STLGetByIdView,
     DownloadedSTLListView,
     DeleteSTLonAlbumView, CreateSTLOnAlbumView, 
-    SelectInputOwnerSTLListView, STLListByAlbum, STLListByAlbumPaginated)
+    SelectInputOwnerSTLListView, STLListByAlbum, STLListByAlbumPaginated,
+    STLGetBySearch)
 
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
     path("stl/list/<int:user_id>/", STLViewListByUser.as_view()),
     path("stl/get/<int:id>/", STLGetByIdView.as_view()),
     path("stl/list/owner/", STLViewListOwner.as_view()),
+    path("stl/search/", STLGetBySearch.as_view()),
     path("stl/list/album/<int:id>/", STLListByAlbum.as_view()),
     path("stl/list/album/paginated/<int:id>/", STLListByAlbumPaginated.as_view()),
     path("stl/delete/<int:id>/", DeleteSTLView.as_view()),

@@ -51,6 +51,14 @@ export class StlService {
 
   listSTLByUser(userID:number):Observable<STL>{
     return this.http.get<STL>(`${this.apiUrl}stl/list/${userID}/`);
+  } 
+
+  stlListBySearch(query:string, page:number, pageSize:number=4):Observable<PaginatedResponse<STL>>{
+    let params = new HttpParams()
+    .set('search', query)
+    .set('page', page.toString())
+    .set('page_size', pageSize.toString());
+    return this.http.get<PaginatedResponse<STL>>(`${this.apiUrl}stl/search/`, {params});
   }
 
   listSTLByOwner(page:number, pageSize:number=4):Observable<PaginatedResponse<STL>>{

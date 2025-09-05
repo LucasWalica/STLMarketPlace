@@ -56,6 +56,7 @@ class AlbumListOwnerView(generics.ListAPIView):
 
 class AlbumListByUser(generics.ListAPIView):
     parser_classes = [JSONParser]
+    permission_classes = []
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     pagination_class = PaginationAlbumViewList
@@ -63,6 +64,20 @@ class AlbumListByUser(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs.get("id")
         return Album.objects.filter(fkUser__id=user_id)
+
+
+class AlbumListBySearch(generics.ListAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = []
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    pagination_class = PaginationAlbumViewList
+
+    def get_queryset(self):
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            return Album.objects.filter(name__icontains=search_query).order_by('-likes', '-downloads')
+        return Album.objects.none()  # Retorna un queryset vacío si no hay consulta de búsqueda
     
 class AlbumList(generics.ListAPIView):
     parser_classes = [JSONParser]

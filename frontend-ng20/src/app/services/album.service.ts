@@ -34,6 +34,14 @@ export class AlbumService {
     return this.http.get<PaginatedResponse<Album>>(`${this.apiUrl}list/`, {params});
   }
 
+  albumListBySearch(query:string, page:number, pageSize:number=4):Observable<PaginatedResponse<Album>>{
+    let params = new HttpParams()
+    .set("search", query)
+    .set("page", page.toString())
+    .set("page_size", pageSize.toString())
+    return this.http.get<PaginatedResponse<Album>>(`${this.apiUrl}list/search/`, {params});
+  }
+
   albumListByUser(userID:number):Observable<Album>{
     return this.http.get<Album>(`${this.apiUrl}list/${userID}/`);
   }

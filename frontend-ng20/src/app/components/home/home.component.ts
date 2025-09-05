@@ -8,11 +8,12 @@ import { Album } from '../../models/album.model';
 import { StlCard } from '../items/stl/stl-card/stl-card';
 import { CommonModule } from '@angular/common';
 import { AlbumCard } from '../items/album/album-card/album-card';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, StlCard, CommonModule, AlbumCard],
+  imports: [NavbarComponent, StlCard, CommonModule, AlbumCard, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -22,12 +23,14 @@ export class HomeComponent implements OnInit{
   searchingForAlbum:boolean = false;
   searchingForSTL:boolean = false;
 
+
+  searchAlbumInput:string = "";
   bestAlbum:Album[] = [] as Album[];
   albumPrevPageAvaible:boolean = false;
   albumNextPageAvaible:boolean = false;
   albumCurrentPage:number = 1;
 
-
+  searchSTLInput:string =  "";
   currentPage:number = 1;
   stlNextPageAvaible:boolean = false; 
   stlPrevPageAvaible:boolean = false; 
@@ -71,22 +74,46 @@ export class HomeComponent implements OnInit{
     }
   }
 
+
+  // usable for list by search and normal list
   getSTLData(currentpage:number){
-    this.stlService.listSTL(currentpage).subscribe({
-      next: (response) => {
-        this.checkNextPrevAvaibility(response);
-        this.bestModelSTLs =response.results
-      }
-    })
+    if(this.searchSTLInput && this.searchSTLInput.trim() != ""){
+      this.stlService.stlListBySearch(this.searchSTLInput, currentpage).subscribe({
+        next: (response) => {
+          this.checkNextPrevAvaibility(response);
+          this.bestModelSTLs =response.results
+        }
+      })
+      return;
+    }else {
+      this.stlService.listSTL(currentpage).subscribe({
+        next: (response) => {
+          this.checkNextPrevAvaibility(response);
+          this.bestModelSTLs =response.results
+        }
+      })
+    }
   } 
 
+
+  // usable for list by search and normal album list
   getAlbumData(currentPage:number){
-    this.albumService.albumList(currentPage).subscribe({
-      next: (response) => {
-        this.checkAlbumNextPrevAvaibility(response);
-        this.bestAlbum = response.results;
-      }
-    })
+    if(this.searchAlbumInput && this.searchAlbumInput.trim() != ""){
+      this.albumService.albumListBySearch(this.searchAlbumInput, currentPage).subscribe({
+        next: (response) => {
+          this.checkAlbumNextPrevAvaibility(response);
+          this.bestAlbum = response.results;
+        }
+      })
+      return;
+    }else{
+      this.albumService.albumList(currentPage).subscribe({
+        next: (response) => {
+          this.checkAlbumNextPrevAvaibility(response);
+          this.bestAlbum = response.results;
+        }
+      })
+    }
   }
 
   checkNextPrevAvaibility(response:any){

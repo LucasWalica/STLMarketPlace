@@ -15,7 +15,7 @@
         <h3 class="text-lg font-audiowide text-center mb-2 text-custom-violet">Album Description</h3>
         <p class="text-center text-custom-violet">{{ this.album.description }}</p>
       </div>
-      <!-- STL List -->
+      <!-- STL Name List -->
       <div class="rounded-md border border-custom-blue-night bg-custom-bright-lilac p-4 shadow">
         <h3 class="text-lg font-audiowide text-center mb-4 text-custom-violet">Included STLs</h3>
         <div class="flex flex-col gap-4">
@@ -33,36 +33,43 @@
         </div>
       </div>
       <!-- Right: STL Info and Actions -->
-      <div class="flex flex-row gap-0 justify-center">
+      <div class="flex flex-col md:flex-row gap-0 justify-center">
           @if (!loadingSTL) {
             <div>
                 <h3 class="text-lg font-audiowide text-center mb-2 
                     text-custom-violet">
                     {{selectedSTL.name}}
                 </h3>
-                <p>{{selectedSTL.description}}</p>
+                <p class="text-custom-bright-lilac bg-custom-blue-night p-2 m-2 text-center rounded-md">{{selectedSTL.description}}</p>
                 <div class="flex flex-col justify-center gap-2 my-4 items-center text-center">
                     <div class="w-1/2 rounded-md bg-custom-blue-night text-custom-tulip">{{selectedSTL.category1}}</div>
                     <div class="w-1/2 rounded-md bg-custom-blue-night text-custom-tulip">{{selectedSTL.category2}}</div>
                 </div>
                 <figure>
-                    <img class="w-1/2 mx-auto my-4 rounded-md"
-                    [src]="selectedSTL.images || 'fallback.jpg'"
-                    alt="STL preview"/>
+                    <img class="h-4/5 w-4/5 mx-auto my-4 rounded-md"
+                    [src]="selectedSTL.images"
+                    alt="STL preview"
+                    height="auto" width="auto"/>
                 </figure>
-                <div class="flex justify-center gap-4 my-4 text-lg font-audiowide">
-                    <div>{{selectedSTL.likes}} 👍</div>
-                    <div>{{selectedSTL.downloads}} 📥</div>
-                    <div>{{selectedSTL.price}} 💶</div>
+                <div class="flex flex-col items-center justify-center">
+                    <div class="flex justify-center gap-4 my-4 
+                    text-lg font-audiowide rounded-md 
+                    bg-custom-blue-night text-custom-bright-lilac w-2/3">
+                        <div>{{selectedSTL.likes}} 👍</div>
+                        <div>{{selectedSTL.downloads}} 📥</div>
+                        <div>{{selectedSTL.price}}€</div>
+                    </div>
                 </div>
             
             </div>
-            <app-stl-viewer class="w-1/2 mx-auto my-4"
+            <app-stl-viewer class="w-1/2 mx-auto my-4 items-center 
+            justify-center flex" 
                 [stlUrl]="selectedSTL.file_url">
             </app-stl-viewer>
     
         }@else {
-            <div class="flex justify-center items-center h-full m-4 mb-20 p-4">
+            <div class="flex justify-center items-center h-full 
+            m-4 mb-20 p-4">
                 <app-loader></app-loader>
             </div>
             }
@@ -73,17 +80,22 @@
 
 
     <div class="flex flex-col gap-6">
-      <!-- Stats -->
-      <div class="bg-custom-violet text-custom-bright-lilac rounded-md p-4 shadow flex flex-col gap-2 items-center">
-        <div class="font-audiowide text-lg">💶 Price: {{ this.album.price || 0 }} €</div>
-        <div class="font-audiowide text-lg">👍 Likes: {{ this.album.likes || 0 }}</div>
-        <div class="font-audiowide text-lg">📥 Downloads: {{ this.album.downloads || 0 }}</div>
-      </div>
+        <!-- Stats -->
+        <div class="mt-4 bg-custom-violet text-custom-bright-lilac rounded-md p-4 shadow flex flex-col gap-2 items-center">
+            <h1 class="text-center text-xl font-audiowide p-2 mt-4 
+            mb-0 text-custom-bright-lilac bg-custom-blue-night
+            rounded-md">
+                Collection info:
+            </h1>
+            <div class="font-audiowide text-lg">💶 Price: {{ this.album.price || 0 }}€</div>
+            <div class="font-audiowide text-lg">👍 Likes: {{ this.album.likes || 0 }}</div>
+            <div class="font-audiowide text-lg">📥 Downloads: {{ this.album.downloads || 0 }}</div>
+            <!-- Buttons -->
+            <div class="flex justify-center gap-4 flex-wrap">
+              <button class="button1">Buy</button>
+            </div>
+        </div>
 
-      <!-- Buttons -->
-      <div class="flex justify-center gap-4 flex-wrap">
-        <button class="button1">Buy</button>
-      </div>
     </div>
   </div>
 

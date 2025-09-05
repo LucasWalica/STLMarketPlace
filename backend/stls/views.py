@@ -105,6 +105,17 @@ class STLGetByIdView(generics.RetrieveAPIView):
     queryset = STL.objects.all()
     serializer_class = STLSerializer
     lookup_field = "id"
+
+
+class STLGetBySearch(generics.ListAPIView):
+    parser_classes = [JSONParser]
+    permission_classes = []
+    serializer_class = STLSerializer
+    pagination_class = PaginationSTLViewList
+
+    def get_queryset(self):
+        search_term = self.request.query_params.get('search', '')
+        return STL.objects.filter(name__icontains=search_term).order_by('-likes', '-downloads')
     
 
 class STLListByAlbumPaginated(generics.ListAPIView):
