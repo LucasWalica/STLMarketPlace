@@ -1,14 +1,39 @@
 <app-navbar></app-navbar>
 <div class="font-orbitron">
+    <div class="flex justify-center gap-4 m-4">
+        <button [ngClass]="{
+                    'button4': showMakerProfile,
+                    'button1': !showMakerProfile
+                }"
+        (click)="this.showMakerProfileFunc()">
+            Profile
+        </button>
+        <button [ngClass]="{
+                    'button4': showDownloadedAssets,
+                    'button1': !showDownloadedAssets
+                }"
+        (click)="this.showDownloadedAssetsFunc()">
+            Downloaded Assets
+        </button>
+        <button [ngClass]="{
+                    'button4': showLikedAssets,
+                    'button1': !showLikedAssets
+                }" 
+        (click)="this.showLikedAssetsFunc()">
+            Liked Assets
+        </button>
+    </div>
     <div class="grid justify-center font-orbitron">
-        @if (this.showCreateMakerProfile) {
+        @if (this.showCreateMakerProfile && this.showMakerProfile) {
             <h2 class="text-xl m-2  text-custom-tulip bg-custom-blue-night p-2 rounded-md">
                 Start selling your designs!
             </h2>
             <button (click)="this.goToMakerCreate()" class="button1">
                 Create your maker profile
             </button>
-        }@else {
+        <!--If maker profile created-->
+        <!--check conditional and cases-->
+        }@else if(!this.showCreateMakerProfile && this.maker && this.showMakerProfile) {
             <div class="flex flex-col md:flex-row justify-evenly items-center gap-8 p-6 bg-custom-bright-lilac rounded-lg shadow-md max-w-5xl mx-auto font-orbitron text-custom-blue-night">
             <!-- Avatar + Nombre -->
             <div class="flex flex-col items-center space-y-3">
@@ -59,6 +84,13 @@
             </div>
 
     <!--buttons to show albums/stls-->
+    <div class="flex justify-center">
+        <div class="text-center font-orbitron text-xl 
+        bg-custom-blue-night text-custom-bright-lilac 
+        mt-8 w-1/2 rounded-md">
+            Your assets
+        </div>
+    </div>
             <div class="flex justify-center gap-4 m-2 bg-custom-violet rounded-md p-2">
                 <button class="button1" (click)="this.showAlbumsfunc()">
                     Show Albums
@@ -115,6 +147,25 @@
                         Create a new Album
                     </button>
                 </div>
+                 <!--Album page button navbar manager-->
+                <div class="flex flex-row justify-center gap-4 items-center m-2">
+    
+                    <button [ngClass]="{
+                        'button3':albumPrevPageAvaible,
+                        'button4':!albumPrevPageAvaible
+                    }" (click)="this.albumPrevPage()">
+                        Previous Page
+                    </button>
+
+                    <p class="font-audiowide text-lg">Current page: {{this.albumPage}}</p>
+
+                    <button [ngClass]="{
+                    'button3': albumNextPageAvaible,
+                    'button4': !albumNextPageAvaible
+                }" (click)="this.albumNextPage()">
+                        Next Page
+                    </button>
+                </div>
                 @if(this.ownerAlbums.length===0){
                     <h2 class="flex justify-center font-audiowide text-lg m-2 p-2">
                         You dont have any albums yet
@@ -125,6 +176,10 @@
                     }
                 }
             }
+        }@else if(this.showLikedAssets){
+            <p>showing liked assets</p>
+        }@else if(this.showDownloadedAssets){
+            <p>Showing downloaded assets</p>
         }
     </div>
 </div>

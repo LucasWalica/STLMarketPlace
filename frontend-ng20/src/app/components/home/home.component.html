@@ -3,20 +3,18 @@
     <div class="flex justify-center">
         <div class="bg-custom-violet w-1/2 rounded-md text-custom-bright-lilac">
             <h1 class="text-xl font-pressstart">Welcome to STL Market Place!</h1>
-            <h2 class="text-base font-audiowide">A place to share 3D printed files and earn money</h2>
+            <h2 class="text-base font-audiowide p-2">A place to share 3D printed files and earn money</h2>
         </div>
     </div>
 
     <div class="flex justify-center">
-
-        <div class="w-1/2 grid md:grid-cols-2 justify-center m-4">
-            <button class="button1 m-2 p-2" (click)="searchForSTL()">
-                Show Best STLs
+        <div class="flex justify-center gap-4 m-2 bg-custom-violet rounded-md p-2">
+            <button class="button1" (click)="this.searchForAlbum()">
+                Show Albums
             </button>
-            <button class="button1 m-2 p-2" (click)="searchForAlbum()">
-                Show Best Albums
+            <button class="button1" (click)="this.searchForSTL()">
+                Show STLs
             </button>
-        
         </div>
     </div>
 

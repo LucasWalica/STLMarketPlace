@@ -27,6 +27,11 @@ import { FormsModule } from '@angular/forms';
 export class ProfileComponent  implements OnInit{
 
 
+  showDownloadedAssets:boolean = false; 
+  showLikedAssets:boolean = false; 
+  showMakerProfile:boolean = true;
+
+
   maker:Maker = {} as Maker; 
   showCreateMakerProfile: boolean = false;
   ownerSTLs:STL[] = [] as STL[];
@@ -59,6 +64,25 @@ export class ProfileComponent  implements OnInit{
     }
     this.getownSTLData(this.page);
     this.getOwnAlbumData(this.albumPage)
+  }
+
+
+  showDownloadedAssetsFunc(){
+    this.showDownloadedAssets = true;
+    this.showLikedAssets = false;
+    this.showMakerProfile = false;
+  }
+
+  showLikedAssetsFunc(){
+    this.showLikedAssets = true; 
+    this.showDownloadedAssets = false;
+    this.showMakerProfile = false; 
+  }
+
+  showMakerProfileFunc(){
+    this.showMakerProfile = true;
+    this.showDownloadedAssets = false;
+    this.showLikedAssets = false;
   }
 
   showAlbumsfunc(){
